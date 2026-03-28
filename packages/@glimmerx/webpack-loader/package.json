@@ -11,12 +11,10 @@
   },
   "dependencies": {
     "@glimmer/syntax": "^0.92.0",
-    "validate-peer-dependencies": "^1.1.0",
     "loader-utils": "2.0.0",
     "schema-utils": "3.0.0"
   },
   "peerDependencies": {
-    "@norith/glimmerx-babel-preset": "1.0.0",
     "babel-plugin-htmlbars-inline-precompile": "^5.2.1"
   },
   "devDependencies": {

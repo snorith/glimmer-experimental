@@ -1,5 +1,3 @@
-require('validate-peer-dependencies')(__dirname);
-
 const { preprocessEmbeddedTemplates } = require('babel-plugin-htmlbars-inline-precompile');
 
 const { getOptions } = require('loader-utils');
