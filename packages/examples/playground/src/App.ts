@@ -1,13 +1,13 @@
-import Component, { hbs, tracked } from '@glimmerx/component';
-import { action } from '@glimmerx/modifier';
+import Component, { hbs, tracked } from '@norith/glimmerx-component';
+import { action } from '@norith/glimmerx-modifier';
 import Editor from './Editor';
 import Sandbox from './Sandbox';
 
 import './App.css';
 
 const DEFAULT_SNIPPET = `
-import Component, { hbs, tracked } from '@glimmerx/component';
-import { on, action } from '@glimmerx/modifier';
+import Component, { hbs, tracked } from '@norith/glimmerx-component';
+import { on, action } from '@norith/glimmerx-modifier';
 
 export default class HelloWorld extends Component {
   @tracked count = 1;

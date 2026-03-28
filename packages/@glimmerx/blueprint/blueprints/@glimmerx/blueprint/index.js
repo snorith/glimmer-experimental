@@ -22,6 +22,6 @@ module.exports = Object.assign({}, MainBlueprint, {
     this._super.init.apply(this, arguments);
 
     this.path = path.join(__dirname, '..', '..', '..');
-    this.name = '@glimmerx/blueprint';
+    this.name = '@norith/glimmerx-blueprint';
   },
 });

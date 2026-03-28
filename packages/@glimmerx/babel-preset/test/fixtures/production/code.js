@@ -1,7 +1,7 @@
 import { DEBUG } from '@glimmer/env';
 import { assert, deprecate } from '@glimmer/debug';
 import { tracked } from '@glimmerx/tracking';
-import Component, { hbs } from '@glimmerx/component';
+import Component, { hbs } from '@norith/glimmerx-component';
 
 if (DEBUG) {
   console.log('DEBUG!');

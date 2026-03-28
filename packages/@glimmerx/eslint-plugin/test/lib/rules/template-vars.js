@@ -43,7 +43,7 @@ describe('no-unused-vars', function () {
 
   it('should not contain any errors when hbs is present and all references are imported', () => {
     const lintedOutput = testUnusedVars(`
-      import { hbs } from '@glimmerx/component';
+      import { hbs } from '@norith/glimmerx-component';
       import myHelper from './my-helper';
       import MyOtherComponent from './MyOtherComponent';
       export default class Component {
@@ -57,7 +57,7 @@ describe('no-unused-vars', function () {
   });
   it('should not contain any errors when hbs is present (but aliased) and all references are imported', () => {
     const lintedOutput = testUnusedVars(`
-      import { hbs as notHbs } from '@glimmerx/component';
+      import { hbs as notHbs } from '@norith/glimmerx-component';
       import myHelper from './my-helper';
       import MyOtherComponent from './MyOtherComponent';
       export default class Component {
@@ -84,7 +84,7 @@ describe('no-unused-vars', function () {
   });
   it('should throw errors when unused import present', () => {
     const lintedOutput = testUnusedVars(`
-      import { hbs } from '@glimmerx/component';
+      import { hbs } from '@norith/glimmerx-component';
       import myHelper from './myHelper';
       export default class Component {
         static template = hbs\`Just some text.
@@ -99,7 +99,7 @@ describe('no-unused-vars', function () {
   });
   it('should throw errors when template literal is not tagged with hbs', () => {
     const lintedOutput = testUnusedVars(`
-      import { hbs } from '@glimmerx/component';
+      import { hbs } from '@norith/glimmerx-component';
       import myHelper from './myHelper';
       export default class Component {
         static template = \`I am using {{myHelper}} here, but I forgot to tag this template literal with hbs.\`;
@@ -128,7 +128,7 @@ describe('no-unused-vars', function () {
   });
   it('should throw errors when hbs is imported with an alias and alias is not used', () => {
     const lintedOutput = testUnusedVars(`
-      import { hbs as notHbs } from '@glimmerx/component';
+      import { hbs as notHbs } from '@norith/glimmerx-component';
       import myHelper from './myHelper';
       export default class Component {
         static template = hbs\`I am using {{myHelper}} here, but I forgot to import hbs,
@@ -148,7 +148,7 @@ ruleTester.run('template-vars', rule, {
   valid: [
     {
       code: `
-        import { hbs } from '@glimmerx/component';
+        import { hbs } from '@norith/glimmerx-component';
         import myHelper from './my-helper';
         import MyOtherComponent from './MyOtherComponent';
         export default class Component {
@@ -161,7 +161,7 @@ ruleTester.run('template-vars', rule, {
     },
     {
       code: `
-        import { hbs } from '@glimmerx/component';
+        import { hbs } from '@norith/glimmerx-component';
         import myHelper from './my-helper';
         import MyOtherComponent from './MyOtherComponent';
         export default class Component {
@@ -185,7 +185,7 @@ ruleTester.run('template-vars', rule, {
     },
     {
       code: `
-        import { hbs } from '@glimmerx/component';
+        import { hbs } from '@norith/glimmerx-component';
         export default class Component {
           static template = hbs\`
             {{#if}}
@@ -206,7 +206,7 @@ ruleTester.run('template-vars', rule, {
     },
     {
       code: `
-        import { hbs } from '@glimmerx/component';
+        import { hbs } from '@norith/glimmerx-component';
         export default class Component {
           static template = hbs\`
             {{!This is for instances where an argument is a curried component}}
@@ -220,7 +220,7 @@ ruleTester.run('template-vars', rule, {
     },
     {
       code: `
-        import { hbs } from '@glimmerx/component';
+        import { hbs } from '@norith/glimmerx-component';
         export default class Component {
           static template = hbs\`
             {{!This is for instances where an argument is a curried component}}
@@ -234,7 +234,7 @@ ruleTester.run('template-vars', rule, {
     },
     {
       code: `
-        import { hbs } from '@glimmerx/component';
+        import { hbs } from '@norith/glimmerx-component';
         export default class Component {
           static template = hbs\`
             {{#if}}
@@ -259,7 +259,7 @@ ruleTester.run('template-vars', rule, {
     },
     {
       code: `
-        import { hbs } from '@glimmerx/component';
+        import { hbs } from '@norith/glimmerx-component';
         export default class Component {
           static template = hbs\`
             {{#if}}
@@ -281,7 +281,7 @@ ruleTester.run('template-vars', rule, {
   invalid: [
     {
       code: `
-        import { hbs } from '@glimmerx/component';
+        import { hbs } from '@norith/glimmerx-component';
         export default class Component {
           static template = hbs\`I am using {{myHelper}} here, but I forgot to tag this template literal with hbs.\`;
           method() {

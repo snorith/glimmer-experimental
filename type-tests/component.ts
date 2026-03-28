@@ -1,7 +1,7 @@
 import { expectTypeOf } from 'expect-type';
-import { hbs, TemplateComponent } from '@glimmerx/component';
+import { hbs, TemplateComponent } from '@norith/glimmerx-component';
 
-declare module '@glimmerx/component' {
+declare module '@norith/glimmerx-component' {
   // For the purposes of testing, make the instance type dependent on the `S` parameter,
   // even if in practice the variance wouldn't be quite right.
   export interface TemplateComponentInstance<S> {

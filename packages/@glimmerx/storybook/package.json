@@ -1,6 +1,6 @@
 {
-  "name": "@glimmerx/storybook",
-  "version": "0.6.8",
+  "name": "@norith/glimmerx-storybook",
+  "version": "1.0.0",
   "description": "storybook for glimmerjs",
   "keywords": [
     "storybook",
@@ -50,17 +50,18 @@
     "global": "^4.4.0"
   },
   "peerDependencies": {
-    "@glimmerx/babel-preset": "^0.6.8",
-    "@glimmerx/component": "^0.6.8",
-    "@glimmerx/core": "^0.6.8",
-    "@glimmerx/webpack-loader": "^0.6.8",
+    "@norith/glimmerx-babel-preset": "1.0.0",
+    "@norith/glimmerx-component": "1.0.0",
+    "@norith/glimmerx-core": "1.0.0",
+    "@norith/glimmerx-webpack-loader": "1.0.0",
     "babel-loader": "^8.1.0"
   },
   "engines": {
     "node": ">=8.0.0"
   },
-  "volta": {
-    "node": "12.10.0",
-    "yarn": "1.22.4"
+  "repository": "https://github.com/snorith/glimmer-experimental",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

@@ -11,12 +11,12 @@ module.exports = {
     let htmlbarsChecker = new VersionChecker(this.parent).for('ember-cli-htmlbars');
 
     if (!emberChecker.gte('3.25.0')) {
-      throw new Error('@glimmerx/component requires ember-source 3.25.0 or higher');
+      throw new Error('@norith/glimmerx-component requires ember-source 3.25.0 or higher');
     }
 
     if (!htmlbarsChecker.gte('5.4.0')) {
       throw new Error(
-        '@glimmerx/component requires ember-cli-htmlbars 5.4.0 or higher as a peer dependency'
+        '@norith/glimmerx-component requires ember-cli-htmlbars 5.4.0 or higher as a peer dependency'
       );
     }
 
@@ -26,7 +26,7 @@ module.exports = {
       addonOptions['ember-cli-htmlbars'] || {});
 
     emberCliHtmlbarsOptions._customInlineModules = {
-      '@glimmerx/component': {
+      '@norith/glimmerx-component': {
         export: 'hbs',
         useTemplateLiteralProposalSemantics: 1,
       },

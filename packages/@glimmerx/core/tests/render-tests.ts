@@ -1,8 +1,8 @@
-import Component, { tracked, hbs } from '@glimmerx/component';
+import Component, { tracked, hbs } from '@norith/glimmerx-component';
 
-import { helper } from '@glimmerx/helper';
-import Service, { service } from '@glimmerx/service';
-import { on, action } from '@glimmerx/modifier';
+import { helper } from '@norith/glimmerx-helper';
+import Service, { service } from '@norith/glimmerx-service';
+import { on, action } from '@norith/glimmerx-modifier';
 
 const { module, test } = QUnit;
 

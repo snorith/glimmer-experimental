@@ -11,7 +11,7 @@ module.exports = {
   extends: ['eslint:recommended'],
   plugins: ['@typescript-eslint', '@glimmerx'],
   rules: {
-    '@glimmerx/template-vars': 'error',
+    '@norith/glimmerx-template-vars': 'error',
   },
   overrides: [
     // node files

@@ -4,6 +4,6 @@ const packageJson = require('../../package.json');
 export default {
   packageJson,
   framework: 'glimmerx',
-  frameworkPath: '@glimmerx/storybook',
+  frameworkPath: '@norith/glimmerx-storybook',
   frameworkPresets: [require.resolve('./framework-preset-glimmer.js')],
 };

@@ -1,9 +1,9 @@
 import './modifier-tests';
 import renderTests, { Constructor } from './render-tests';
 import { renderComponent, RenderComponentOptions } from '..';
-import Component from '@glimmerx/component';
+import Component from '@norith/glimmerx-component';
 
-renderTests('@glimmerx/core', async (
+renderTests('@norith/glimmerx-core', async (
   component: Constructor<Component>,
   options?: RenderComponentOptions
 ) => {

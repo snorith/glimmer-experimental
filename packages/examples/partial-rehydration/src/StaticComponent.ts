@@ -1,4 +1,4 @@
-import { hbs } from '@glimmerx/component';
+import { hbs } from '@norith/glimmerx-component';
 import RehydratingComponent from './RehydratingComponent';
 
 export default hbs`

@@ -1,9 +1,9 @@
-import Component, { hbs } from '@glimmerx/component';
+import Component, { hbs } from '@norith/glimmerx-component';
 import HTMLSerializer from '@simple-dom/serializer';
 import voidMap from '@simple-dom/void-map';
 import { SerializableNode } from '@simple-dom/interface';
 import { renderToString, RenderOptions } from '..';
-import Service, { service } from '@glimmerx/service';
+import Service, { service } from '@norith/glimmerx-service';
 
 QUnit.module('@glimmer/ssr rendering', () => {
   QUnit.test('options.serializer', async (assert) => {

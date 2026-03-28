@@ -13,12 +13,12 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
-    "@glimmerx/core": "^0.6.8",
+    "@norith/glimmerx-core": "1.0.0",
     "basic-addon": "0.6.8"
   },
   "devDependencies": {
     "@glimmer/interfaces": "0.84.0",
-    "@glimmerx/storybook": "^0.6.8",
+    "@norith/glimmerx-storybook": "1.0.0",
     "@storybook/addon-essentials": "^6.4.1"
   },
   "volta": {

@@ -1,5 +1,5 @@
-import { renderComponent } from '@glimmerx/core';
-import Component, { hbs } from '@glimmerx/component';
+import { renderComponent } from '@norith/glimmerx-core';
+import Component, { hbs } from '@norith/glimmerx-component';
 import { evalSnippet } from './utils/eval-snippet';
 
 function renderSnippet(snippet: string): HTMLElement {

@@ -1,6 +1,6 @@
 declare const Babel: any;
 
-import glimmerXPreset from '@glimmerx/babel-preset';
+import glimmerXPreset from '@norith/glimmerx-babel-preset';
 import { precompile } from '@glimmer/compiler';
 import babelPresetEnv from '@babel/preset-env';
 

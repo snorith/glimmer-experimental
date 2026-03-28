@@ -17,7 +17,7 @@ module.exports = {
   },
   rules: {
     'ember/no-jquery': 'error',
-    '@glimmerx/template-vars': 'error',
+    '@norith/glimmerx-template-vars': 'error',
   },
   overrides: [
     // node files

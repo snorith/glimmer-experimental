@@ -1,4 +1,4 @@
-import { setHelperManager, HelperManager, helperCapabilities, Owner } from '@glimmerx/core';
+import { setHelperManager, HelperManager, helperCapabilities, Owner } from '@norith/glimmerx-core';
 import { Arguments } from '@glimmer/interfaces';
 
 interface HelperOptions {

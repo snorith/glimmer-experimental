@@ -18,7 +18,7 @@ import { setComponentTemplate as _setComponentTemplate } from "@glimmer/core";
 import { createTemplateFactory as _createTemplateFactory } from "@glimmer/core";
 import { assert, deprecate } from '@glimmer/debug';
 import { tracked } from '@glimmerx/tracking';
-import Component from '@glimmerx/component';
+import Component from '@norith/glimmerx-component';
 
 if (true
 /* DEBUG */

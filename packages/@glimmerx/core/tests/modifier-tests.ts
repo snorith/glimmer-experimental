@@ -1,7 +1,7 @@
 const { module, test } = QUnit;
 
-import { on, action } from '@glimmerx/modifier';
-import Component, { tracked, hbs } from '@glimmerx/component';
+import { on, action } from '@norith/glimmerx-modifier';
+import Component, { tracked, hbs } from '@norith/glimmerx-component';
 import { renderComponent, didRender } from '..';
 
 module('Modifier Tests', () => {

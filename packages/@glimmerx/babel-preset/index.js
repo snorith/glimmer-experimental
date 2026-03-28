@@ -12,7 +12,13 @@ module.exports = function (api, options) {
         {
           ...options,
           __customInlineTemplateModules: {
+            // Support both the original and renamed import paths
+            // (consumer apps may use npm aliases to keep '@glimmerx/component')
             '@glimmerx/component': {
+              export: 'hbs',
+              useTemplateLiteralProposalSemantics: 1,
+            },
+            '@norith/glimmerx-component': {
               export: 'hbs',
               useTemplateLiteralProposalSemantics: 1,
             },

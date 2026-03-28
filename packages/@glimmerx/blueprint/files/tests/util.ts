@@ -3,7 +3,7 @@ import {
   ComponentDefinition,
   RenderComponentOptions,
   didRender,
-} from '@glimmerx/core';
+} from '@norith/glimmerx-core';
 
 // Bootstrap QUnit
 import 'qunit';

@@ -4,7 +4,7 @@ import {
   RenderOptions as GlimmerJsRenderOptions,
 } from '@glimmer/ssr';
 import { Dict } from '@glimmer/interfaces';
-import { ComponentDefinition, Owner } from '@glimmerx/core';
+import { ComponentDefinition, Owner } from '@norith/glimmerx-core';
 
 export interface RenderOptions extends Omit<GlimmerJsRenderOptions, 'owner'> {
   services?: Dict<unknown>;

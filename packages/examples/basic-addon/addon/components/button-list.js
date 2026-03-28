@@ -1,7 +1,7 @@
-import Component, { hbs } from '@glimmerx/component';
-import { action } from '@glimmerx/modifier';
-import { fn } from '@glimmerx/helper';
-import { service } from '@glimmerx/service';
+import Component, { hbs } from '@norith/glimmerx-component';
+import { action } from '@norith/glimmerx-modifier';
+import { fn } from '@norith/glimmerx-helper';
+import { service } from '@norith/glimmerx-service';
 import SimpleButton from './simple-button';
 
 export default class ButtonList extends Component {

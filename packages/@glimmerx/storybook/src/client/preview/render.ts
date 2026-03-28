@@ -1,6 +1,6 @@
 import { document } from 'global';
 import { RenderMainArgs, GlimmerStoryFnReturnType, GlimmerStoryComponentClass } from './types';
-import { renderComponent, RenderComponentOptions } from '@glimmerx/core';
+import { renderComponent, RenderComponentOptions } from '@norith/glimmerx-core';
 
 const rootElement = document ? document.getElementById('root') : null;
 

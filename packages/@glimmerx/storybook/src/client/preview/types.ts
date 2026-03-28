@@ -1,4 +1,4 @@
-import { ComponentDefinition, RenderComponentOptions } from '@glimmerx/core';
+import { ComponentDefinition, RenderComponentOptions } from '@norith/glimmerx-core';
 
 export type GlimmerStoryFnReturnType =
   | GlimmerStoryComponentClass

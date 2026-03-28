@@ -1,5 +1,5 @@
-import Component, { hbs, tracked } from '@glimmerx/component';
-import { on, action } from '@glimmerx/modifier';
+import Component, { hbs, tracked } from '@norith/glimmerx-component';
+import { on, action } from '@norith/glimmerx-modifier';
 import monaco from './monaco';
 
 import logo from './logo.svg';

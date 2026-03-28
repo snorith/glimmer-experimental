@@ -44,7 +44,7 @@ module.exports = {
 
     return {
       ImportSpecifier(node) {
-        if (isGlimmerSfc || node.parent.source.value !== '@glimmerx/component') {
+        if (isGlimmerSfc || (node.parent.source.value !== '@glimmerx/component' && node.parent.source.value !== '@norith/glimmerx-component')) {
           return;
         }
         const importedName = node.imported.name;

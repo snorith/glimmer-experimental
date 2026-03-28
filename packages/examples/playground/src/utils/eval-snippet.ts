@@ -1,18 +1,18 @@
 import * as _core from '@glimmer/core';
-import * as _xCore from '@glimmerx/core';
-import * as _xHelper from '@glimmerx/helper';
-import * as _xModifier from '@glimmerx/modifier';
-import * as _xService from '@glimmerx/service';
-import Component, * as _xComponent from '@glimmerx/component';
+import * as _xCore from '@norith/glimmerx-core';
+import * as _xHelper from '@norith/glimmerx-helper';
+import * as _xModifier from '@norith/glimmerx-modifier';
+import * as _xService from '@norith/glimmerx-service';
+import Component, * as _xComponent from '@norith/glimmerx-component';
 import compile from './compile';
 
 const modules = {
   '@glimmer/core': _core,
-  '@glimmerx/core': _xCore,
-  '@glimmerx/component': _xComponent,
-  '@glimmerx/helper': _xHelper,
-  '@glimmerx/modifier': _xModifier,
-  '@glimmerx/service': _xService,
+  '@norith/glimmerx-core': _xCore,
+  '@norith/glimmerx-component': _xComponent,
+  '@norith/glimmerx-helper': _xHelper,
+  '@norith/glimmerx-modifier': _xModifier,
+  '@norith/glimmerx-service': _xService,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

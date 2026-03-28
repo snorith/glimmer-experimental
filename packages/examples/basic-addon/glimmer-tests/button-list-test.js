@@ -1,6 +1,6 @@
 /* global QUnit */
-import { renderComponent, didRender } from '@glimmerx/core';
-import { hbs } from '@glimmerx/component';
+import { renderComponent, didRender } from '@norith/glimmerx-core';
+import { hbs } from '@norith/glimmerx-component';
 import { ButtonList, ButtonListService } from 'basic-addon';
 
 const { module, test } = QUnit;

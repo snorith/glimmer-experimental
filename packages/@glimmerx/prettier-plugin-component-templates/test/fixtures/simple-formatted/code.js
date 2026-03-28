@@ -1,4 +1,4 @@
-import Component, { hbs } from '@glimmerx/component';
+import Component, { hbs } from '@norith/glimmerx-component';
 
 const StripWhitespace = hbs`     
 `;

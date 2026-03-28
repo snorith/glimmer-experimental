@@ -18,7 +18,7 @@ export function webpack(config: Configuration) {
               loader: 'babel-loader',
               options: {
                 presets: [
-                  '@glimmerx/babel-preset',
+                  '@norith/glimmerx-babel-preset',
                   [
                     '@babel/preset-env',
                     {
@@ -29,7 +29,7 @@ export function webpack(config: Configuration) {
                 ],
               },
             },
-            '@glimmerx/webpack-loader',
+            '@norith/glimmerx-webpack-loader',
           ],
         },
         {
@@ -39,7 +39,7 @@ export function webpack(config: Configuration) {
               loader: 'babel-loader',
               options: {
                 presets: [
-                  '@glimmerx/babel-preset',
+                  '@norith/glimmerx-babel-preset',
                   [
                     '@babel/preset-env',
                     {
@@ -49,7 +49,7 @@ export function webpack(config: Configuration) {
                 ],
               },
             },
-            '@glimmerx/webpack-loader',
+            '@norith/glimmerx-webpack-loader',
           ],
         },
       ],
@@ -58,8 +58,8 @@ export function webpack(config: Configuration) {
       plugins: [],
       extensions: ['.js', '.ts', '.gjs', '.gts'],
       alias: {
-        '@glimmerx/core$': require.resolve('@glimmerx/core'),
-        '@glimmerx/component$': require.resolve('@glimmerx/component'),
+        '@norith/glimmerx-core$': require.resolve('@norith/glimmerx-core'),
+        '@norith/glimmerx-component$': require.resolve('@norith/glimmerx-component'),
       },
     },
   };

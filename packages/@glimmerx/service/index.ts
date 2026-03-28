@@ -1,6 +1,6 @@
 export { service } from './src/decorator';
 
-import { setOwner } from '@glimmerx/core';
+import { setOwner } from '@norith/glimmerx-core';
 
 export default class Service {
   constructor(owner: object) {

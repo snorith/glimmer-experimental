@@ -1,4 +1,4 @@
-import { renderComponent } from '@glimmerx/core';
+import { renderComponent } from '@norith/glimmerx-core';
 import MyComponent from './src/MyComponent';
 
 document.addEventListener(

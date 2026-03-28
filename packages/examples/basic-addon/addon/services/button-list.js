@@ -1,4 +1,4 @@
-import Service from '@glimmerx/service';
+import Service from '@norith/glimmerx-service';
 import { tracked } from '@glimmer/tracking';
 
 class ButtonModel {

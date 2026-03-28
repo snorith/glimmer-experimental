@@ -1,5 +1,5 @@
 import OtherComponent from './OtherComponent';
-import { hbs } from '@glimmerx/component';
+import { hbs } from '@norith/glimmerx-component';
 
 // default export determines how stories show up
 export default {

@@ -42,7 +42,7 @@ module.exports = () => {
       rules: [
         {
           test: /\.(js|mjs|ts|gts|gjs)$/,
-          use: ['babel-loader', '@glimmerx/webpack-loader'],
+          use: ['babel-loader', '@norith/glimmerx-webpack-loader'],
         },
         {
           test: /\.css$/,

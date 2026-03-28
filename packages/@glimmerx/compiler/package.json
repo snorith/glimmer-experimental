@@ -1,9 +1,9 @@
 {
-  "name": "@glimmerx/compiler",
-  "version": "0.6.8",
+  "name": "@norith/glimmerx-compiler",
+  "version": "1.0.0",
   "description": "Compiler functionality",
   "main": "index.js",
-  "repository": "https://github.com/glimmerjs/glimmer-experimental",
+  "repository": "https://github.com/snorith/glimmer-experimental",
   "author": "Tom Dale <tom@tomdale.net>",
   "license": "MIT",
   "private": false,
@@ -13,8 +13,8 @@
   "dependencies": {
     "@glimmer/compiler": "0.84.0"
   },
-  "volta": {
-    "node": "12.10.0",
-    "yarn": "1.22.4"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

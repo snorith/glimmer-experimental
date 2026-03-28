@@ -1,4 +1,4 @@
-import { renderComponent } from '@glimmerx/core';
+import { renderComponent } from '@norith/glimmerx-core';
 import MyComponent from './src/MyComponent';
 import LocaleService from './src/services/LocaleService';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -15,5 +15,5 @@
   * blueprints/ folder
   */
 module.exports = {
-  name: '@glimmerx/blueprint',
+  name: '@norith/glimmerx-blueprint',
 };

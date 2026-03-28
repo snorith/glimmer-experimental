@@ -1,16 +1,13 @@
 {
-  "name": "@glimmerx/blueprint",
-  "version": "0.6.8",
+  "name": "@norith/glimmerx-blueprint",
+  "version": "1.0.0",
   "description": "Ember CLI blueprint for initializing a new GlimmerX application.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postversion": "sh ./dev/add-to-output-repos.sh"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/glimmerjs/glimmer-experimental.git"
-  },
+  "repository": "https://github.com/snorith/glimmer-experimental",
   "keywords": [
     "ember-blueprint",
     "ember-addon"
@@ -22,15 +19,15 @@
   },
   "homepage": "https://github.com/glimmerjs/glimmer-experimental#readme",
   "dependencies": {
-    "@glimmer/blueprint": "2.0.0-beta.21",
+    "@norith/glimmer-blueprint": "1.0.0",
     "ember-cli-string-utils": "^1.1.0",
     "walk-sync": "^2.0.2"
   },
   "ember-addon": {
     "main": "ember-addon-main.js"
   },
-  "volta": {
-    "node": "12.16.1",
-    "yarn": "1.22.4"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

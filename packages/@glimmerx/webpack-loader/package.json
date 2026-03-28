@@ -1,8 +1,8 @@
 {
-  "name": "@glimmerx/webpack-loader",
-  "version": "0.6.8",
+  "name": "@norith/glimmerx-webpack-loader",
+  "version": "1.0.0",
   "description": "GlimmerX Webpack Loader",
-  "repository": "https://github.com/glimmerjs/glimmer.js",
+  "repository": "https://github.com/snorith/glimmer-experimental",
   "author": "Tom Dale <tom@tomdale.net>",
   "license": "MIT",
   "private": false,
@@ -10,13 +10,13 @@
     "test": "mocha -r esm"
   },
   "dependencies": {
-    "@glimmer/syntax": "0.84.0",
+    "@glimmer/syntax": "^0.92.0",
     "validate-peer-dependencies": "^1.1.0",
     "loader-utils": "2.0.0",
     "schema-utils": "3.0.0"
   },
   "peerDependencies": {
-    "@glimmerx/babel-preset": "^0.6.8",
+    "@norith/glimmerx-babel-preset": "1.0.0",
     "babel-plugin-htmlbars-inline-precompile": "^5.2.1"
   },
   "devDependencies": {
@@ -25,8 +25,8 @@
     "esm": "^3.2.25",
     "mocha": "^6.2.0"
   },
-  "volta": {
-    "node": "12.16.1",
-    "yarn": "1.22.4"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
