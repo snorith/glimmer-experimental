@@ -68,17 +68,6 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   },
-  "resolutions": {
-    "@norith/glimmer-babel-preset": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/babel-preset",
-    "@norith/glimmer-blueprint": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/blueprint",
-    "@norith/glimmer-component": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/component",
-    "@norith/glimmer-core": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/core",
-    "@norith/glimmer-debug": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/debug",
-    "@norith/glimmer-helper": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/helper",
-    "@norith/glimmer-modifier": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/modifier",
-    "@norith/glimmer-ssr": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/ssr",
-    "@norith/glimmer-tracking": "file:/Users/stephen/WebstormProjects/glimmer.js/packages/@glimmer/tracking"
-  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
