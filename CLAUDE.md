@@ -4,7 +4,7 @@
 
 Maintained fork of [glimmerjs/glimmer-experimental](https://github.com/glimmerjs/glimmer-experimental) — the `@glimmerx/*` packages that provide a standalone GlimmerX component framework. Upstream is abandoned (no releases since 2021).
 
-These packages are **thin wrappers** that re-export from the `@norith/glimmer-*` runtime packages. All packages are renamed from `@glimmerx/*` to `@norith/glimmerx-*` and published at version `1.0.0+` on npmjs.com.
+These packages are **thin wrappers** that re-export from the `@norith/glimmer-*` runtime packages. All packages are renamed from `@glimmerx/*` to `@norith/glimmerx-*` and published on npmjs.com under the `@norith` scope.
 
 ## Relationship to Other Forks
 
@@ -16,15 +16,9 @@ Consumer App
   └── @norith/glint-*     (snorith/glint)                   ← template type checking
 ```
 
-- THIS repo depends on **snorith/glimmer.js** for runtime packages
+- THIS repo depends on **snorith/glimmer.js** for runtime packages (`@norith/glimmer-*` as `^` range dependencies)
 - THIS repo is consumed by consumer apps via npm aliases
 - **snorith/glint** is independent (provides type checking)
-
-### Local Development: Cross-Repo References
-
-For local development (before packages are published), `package.json` resolutions in the root point `@norith/glimmer-*` dependencies to local file paths in the sibling `glimmer.js` checkout. These resolutions must be removed before publishing.
-
-The resolutions block in the root `package.json` assumes the repos are siblings under `/Users/stephen/WebstormProjects/`.
 
 ## Packages
 
@@ -46,24 +40,27 @@ Additional packages exist (blueprint, prettier-plugin, storybook, ssr) but are n
 
 Consumer apps use **npm aliases** so their source code doesn't change:
 ```json
-"@glimmerx/component": "npm:@norith/glimmerx-component@^1.0.0"
+"@glimmerx/component": "npm:@norith/glimmerx-component@^1.0.4"
 ```
 
 The babel-preset, eslint-plugin, and webpack-loader all support **both** `@glimmerx/*` and `@norith/glimmerx-*` import paths to ensure this works.
 
 When modifying these files, preserve BOTH old and new path support:
-- `packages/@glimmerx/babel-preset/index.js` — `__customInlineTemplateModules` has entries for both
+- `packages/@glimmerx/babel-preset/index.js` — `__customInlineTemplateModules` has entries for both `@glimmerx/component` and `@norith/glimmerx-component`
 - `packages/@glimmerx/eslint-plugin/lib/rules/template-vars.js` — checks for both import sources
 - `packages/@glimmerx/webpack-loader/index.js` — `importPath` stays as `@glimmerx/component` (matches consumer source code)
+
+## Important: Dependency Version Management
+
+- `@norith/glimmerx-*` cross-references (internal to this repo) are pinned to exact versions and bumped automatically by `scripts/bump-version.js`
+- `@norith/glimmer-*` dependencies (from snorith/glimmer.js) use `^` caret ranges (e.g., `^1.0.1`) and are **NOT** auto-bumped — update manually when a new minimum version is needed
+- `@glimmer/*` dependencies (from glimmer-vm) are pinned to `0.84.0` and should not be changed
 
 ## Build
 
 ```bash
 # Requires Node 20 (managed via mise — see .mise.toml)
-# First build snorith/glimmer.js (dependency):
-#   cd ../glimmer.js && yarn install && yarn build
-
-yarn install --no-lockfile   # Lockfile is stale due to package renames
+yarn install
 yarn build                   # Compiles TS + builds storybook
 ```
 
@@ -82,7 +79,7 @@ Consumer apps may still list `@glimmerx/babel-plugin-component-templates` — th
 
 ## Publishing
 
-Manual `workflow_dispatch` via `.github/workflows/publish.yml` — select Major/Minor/Patch. Uses `scripts/bump-version.js` and `scripts/publish-packages.js`.
+Manual `workflow_dispatch` via `.github/workflows/publish.yml` — select Major/Minor/Patch. Uses `scripts/bump-version.js` and `scripts/publish-packages.js`. Publish workflow upgrades npm to 11.5.1+ for Trusted Publishing OIDC.
 
 ## Accounts
 
