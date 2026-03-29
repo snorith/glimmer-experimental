@@ -16,7 +16,7 @@ function _initializerWarningHelper(descriptor, context) { throw new Error('Decor
 
 import { setComponentTemplate as _setComponentTemplate } from "@glimmer/core";
 import { createTemplateFactory as _createTemplateFactory } from "@glimmer/core";
-import { assert, deprecate } from '@glimmer/debug';
+import { assert, deprecate } from '@norith/glimmer-debug';
 import { tracked } from '@glimmerx/tracking';
 import Component from '@norith/glimmerx-component';
 

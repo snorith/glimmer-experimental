@@ -1,5 +1,5 @@
 import { Owner, getOwner } from '@norith/glimmerx-core';
-import { assert } from '@glimmer/debug';
+import { assert } from '@norith/glimmer-debug';
 
 function makeServiceDecorator(
   name: string

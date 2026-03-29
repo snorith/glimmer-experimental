@@ -1,4 +1,4 @@
-import { HelperManager, helperCapabilities } from '@glimmer/core';
+import { HelperManager, helperCapabilities } from '@norith/glimmer-core';
 import { Arguments } from '@glimmer/interfaces';
 
 interface FunctionalHelperState {

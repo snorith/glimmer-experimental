@@ -1,6 +1,6 @@
 import FunctionalModifierManager from './src/functional-modifier-manager';
 import FunctionalHelperManager from './src/functional-helper-manager';
-import { setModifierManager, setHelperManager } from '@glimmer/core';
+import { setModifierManager, setHelperManager } from '@norith/glimmer-core';
 
 const FUNCTIONAL_MODIFIER_MANAGER = new FunctionalModifierManager();
 const FUNCTIONAL_MODIFIER_MANAGER_FACTORY = () => FUNCTIONAL_MODIFIER_MANAGER;
@@ -30,4 +30,4 @@ export {
   setOwner,
   getOwner,
   didRender,
-} from '@glimmer/core';
+} from '@norith/glimmer-core';

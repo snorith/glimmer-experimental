@@ -1,5 +1,5 @@
 import { DEBUG } from '@glimmer/env';
-import { assert, deprecate } from '@glimmer/debug';
+import { assert, deprecate } from '@norith/glimmer-debug';
 import { tracked } from '@glimmerx/tracking';
 import Component, { hbs } from '@norith/glimmerx-component';
 

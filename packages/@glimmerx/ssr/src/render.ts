@@ -2,7 +2,7 @@ import {
   renderToString as glimmerJsRenderToString,
   renderToStream as glimmerJsRenderToStream,
   RenderOptions as GlimmerJsRenderOptions,
-} from '@glimmer/ssr';
+} from '@norith/glimmer-ssr';
 import { Dict } from '@glimmer/interfaces';
 import { ComponentDefinition, Owner } from '@norith/glimmerx-core';
 

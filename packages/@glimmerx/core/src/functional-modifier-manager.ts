@@ -1,4 +1,4 @@
-import { modifierCapabilities, ModifierManager } from '@glimmer/core';
+import { modifierCapabilities, ModifierManager } from '@norith/glimmer-core';
 import { Arguments } from '@glimmer/interfaces';
 
 type SimpleModifierFn = (...args: unknown[]) => (() => void) | undefined;

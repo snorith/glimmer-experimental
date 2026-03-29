@@ -1,4 +1,4 @@
-import { action, on as glimmerOn } from '@glimmer/modifier';
+import { action, on as glimmerOn } from '@norith/glimmer-modifier';
 
 declare const Brand: unique symbol;
 

@@ -1,6 +1,6 @@
 export { helper, HelperFunction, Helper } from './src/helper';
 
-import { fn as glimmerFn } from '@glimmer/helper';
+import { fn as glimmerFn } from '@norith/glimmer-helper';
 
 declare const Brand: unique symbol;
 

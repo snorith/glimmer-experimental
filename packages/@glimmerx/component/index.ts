@@ -1,5 +1,5 @@
-export { default } from '@glimmer/component';
-export { tracked } from '@glimmer/tracking';
+export { default } from '@norith/glimmer-component';
+export { tracked } from '@norith/glimmer-tracking';
 
 // This type exists to provide a non-user-constructible, non-subclassable
 // type representing the conceptual "instance type" of a template-only component.

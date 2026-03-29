@@ -2,7 +2,7 @@ import {
   renderComponent as glimmerJsRenderComponent,
   ComponentDefinition,
   RenderComponentOptions as GlimmerJsRenderComponentOptions,
-} from '@glimmer/core';
+} from '@norith/glimmer-core';
 import { Dict } from '@glimmer/interfaces';
 import Owner from './owner';
 
