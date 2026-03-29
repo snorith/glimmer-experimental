@@ -159,3 +159,166 @@ But this is a convention, not enforced at runtime. A function could technically 
 3. Remove `helper()` wrapper from those that don't use services
 4. Keep `helper()` wrapper for those that do
 5. Document the convention: use `helper()` only when service injection is needed
+
+---
+
+## 4. Lazy Page Loading via Webpack Code Splitting
+
+**Impact:** High — reduces initial bundle size significantly
+**Effort:** Low-Medium
+**Repos:** Consumer webapp (no fork changes needed)
+
+### The Problem
+
+Every page in the webapp is eagerly imported in `main.ts`:
+
+```typescript
+import campaigns from "./pages/campaigns2/campaigns2";
+import reportsBuilder from "./pages/reports-builder/index";
+import missionControl from "pages/mission-control";
+// ... 30+ more page imports
+```
+
+All pages are bundled into the main JavaScript payload, loaded on every page view regardless of which page the user actually visits. This increases initial load time and wastes bandwidth.
+
+### Why This Is Feasible
+
+The webapp's page initialization pattern already encapsulates everything needed to mount a page:
+
+```typescript
+// Each page's init function handles its own:
+// 1. Element ID lookup
+// 2. Service instantiation
+// 3. renderComponent call with services and args
+export default function campaigns2(): Promise<void> {
+    const pageElement = document.getElementById("kt_app_content_container");
+    const filterService = new CampaignFilterService();
+    return renderComponent(Campaigns2Component, {
+        element: pageElement,
+        services: { filterService },
+        args: {}
+    });
+}
+```
+
+Each page is self-contained — it knows its element ID, creates its own services, and mounts itself. The page functions are collected into a `PageFunctions` map in `main.ts` and dispatched by a server-rendered meta tag:
+
+```typescript
+const f = PageFunctions[AppEnvSettings.flightpathpage];
+if (f) { f(); startup_services(); }
+```
+
+This dispatch pattern is the natural code-splitting boundary. The page function doesn't need to exist at import time — only when the meta tag triggers it.
+
+### Implementation
+
+Replace static imports with lazy wrappers that dynamically import the page module:
+
+```typescript
+// Before — eagerly loaded, in main bundle
+import campaigns2 from "./pages/campaigns2/campaigns2";
+import missionControl from "pages/mission-control";
+
+// After — lazy loaded, separate webpack chunks
+const campaigns2 = () => import(
+    /* webpackChunkName: "page-campaigns2" */ "./pages/campaigns2/campaigns2"
+).then(m => m.default());
+
+const missionControl = () => import(
+    /* webpackChunkName: "page-mission-control" */ "pages/mission-control"
+).then(m => m.default());
+```
+
+Each page's init function continues to handle its own element ID, service creation, and mounting — the lazy wrapper just defers when the module is loaded.
+
+For pages that vary in their export pattern (some export a class, some a function, some use jQuery), the wrapper adapts:
+
+```typescript
+// Page that exports a function (most common)
+const campaigns2 = () => import(
+    /* webpackChunkName: "page-campaigns2" */ "./pages/campaigns2/campaigns2"
+).then(m => m.default());
+
+// Page that uses jQuery wrapper internally
+const missionControl = () => import(
+    /* webpackChunkName: "page-mission-control" */ "pages/mission-control"
+).then(m => m.default());
+```
+
+The `PageFunctions` map type stays the same — it's `Record<string, () => void | Promise<void>>` — since both sync and async functions are valid.
+
+### Error Handling
+
+Chunk loading can fail (network errors, cache issues). The wrapper should handle this:
+
+```typescript
+function lazyPage(loader: () => Promise<{ default: () => void | Promise<void> }>) {
+    return async () => {
+        try {
+            const module = await loader();
+            return module.default();
+        } catch (err) {
+            console.error('Failed to load page module:', err);
+            // Show a user-friendly error in the page container
+            const container = document.getElementById('kt_app_content_container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="alert alert-danger m-5">
+                        Failed to load page. Please refresh your browser.
+                    </div>
+                `;
+            }
+        }
+    };
+}
+
+// Usage
+const campaigns2 = lazyPage(() => import(
+    /* webpackChunkName: "page-campaigns2" */ "./pages/campaigns2/campaigns2"
+));
+```
+
+### Incremental Adoption
+
+This can be adopted page-by-page — no big-bang migration needed:
+
+1. Start with the largest/least-visited pages (e.g., reports builder, mission control, site preferences)
+2. Use `webpack-bundle-analyzer` (`yarn run build:analyze`) to identify the biggest chunks
+3. Convert one page at a time by replacing `import X from "pages/..."` with the lazy wrapper
+4. The page still works identically — the only difference is when the JavaScript loads
+
+### What Doesn't Need to Change
+
+- **No fork changes needed** — this is purely a consumer app concern
+- **No template changes** — pages render the same way once loaded
+- **No page init functions change** — each page still handles its own element ID, services, and mounting
+- **No routing changes** — Navigo calls the same function signature
+- **Components within a page stay eagerly loaded** relative to that page — only the page-level split matters
+
+### Webpack Configuration
+
+The existing `webpack.common.js` already has `splitChunks` configured with `chunks: 'all'`. Dynamic `import()` with `webpackChunkName` comments will automatically create named chunks. The `framework` and `lib` cache groups will continue to work for shared dependencies.
+
+### Prerequisite: Remove jQuery `$()` Wrappers from Page Init Functions
+
+Several older page init functions wrap their mounting code in `$(function() { ... })` (jQuery's `DOMContentLoaded` handler):
+
+```typescript
+// Older pattern — unnecessary jQuery DOMContentLoaded wrapper
+export default function () {
+  $(function () {
+    const container = document.getElementById("mission-control-container");
+    renderComponent(MissionControl, { element: container });
+  });
+}
+```
+
+This is unnecessary. By the time `main.ts` runs, the DOM is already loaded — the script tags are at the bottom of the page (or deferred), and the server-rendered meta tag that triggers page dispatch is already present. Newer pages like `campaigns2` don't use `$()` and work correctly.
+
+The `$()` wrapper should be removed from all page init functions as a cleanup pass before adopting lazy loading. The jQuery wrapper adds an unnecessary async hop that complicates the promise chain — `lazyPage()` expects `module.default()` to return a `Promise<void>` from `renderComponent`, but `$()` returns `undefined` and defers the actual mounting to a separate microtask.
+
+### Considerations
+
+- **Preloading**: For known navigation paths, webpack's `/* webpackPrefetch: true */` magic comment can preload chunks during idle time
+- **Error handling**: If chunk loading fails (network error), the async wrapper should show an error state rather than silently failing
+- **Server-rendered page detection**: The webapp uses server-rendered meta tags to determine which page to load — the dynamic import wrapper needs to handle this same detection
