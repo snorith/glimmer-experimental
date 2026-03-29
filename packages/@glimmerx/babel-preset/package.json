@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-babel-preset",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "GlimmerX Babel Preset",
   "repository": "https://github.com/snorith/glimmer-experimental",
   "author": "Tom Dale <tom@tomdale.net>",
