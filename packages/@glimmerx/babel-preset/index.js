@@ -8,7 +8,7 @@ module.exports = function (api, options) {
   return {
     presets: [
       [
-        __loadPlugins ? require('@glimmer/babel-preset') : require.resolve('@glimmer/babel-preset'),
+        __loadPlugins ? require('@norith/glimmer-babel-preset') : require.resolve('@norith/glimmer-babel-preset'),
         {
           ...options,
           __customInlineTemplateModules: {

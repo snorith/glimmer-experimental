@@ -4,7 +4,7 @@ const path = require('path');
 const walkSync = require('walk-sync');
 const dasherize = require('ember-cli-string-utils').dasherize;
 
-const glimmerJsPath = path.dirname(require.resolve('@glimmer/blueprint'));
+const glimmerJsPath = path.dirname(require.resolve('@norith/glimmer-blueprint'));
 const glimmerJsFilesPath = path.join(glimmerJsPath, 'files');
 
 module.exports = {
