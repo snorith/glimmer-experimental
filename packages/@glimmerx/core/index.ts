@@ -7,8 +7,18 @@ const FUNCTIONAL_MODIFIER_MANAGER_FACTORY = () => FUNCTIONAL_MODIFIER_MANAGER;
 const FUNCTIONAL_HELPER_MANAGER = new FunctionalHelperManager();
 const FUNCTIONAL_HELPER_MANAGER_FACTORY = () => FUNCTIONAL_HELPER_MANAGER;
 
-setModifierManager(FUNCTIONAL_MODIFIER_MANAGER_FACTORY, Function.prototype);
-setHelperManager(FUNCTIONAL_HELPER_MANAGER_FACTORY, Function.prototype);
+// Guard against duplicate registration — can happen when both @glimmerx/core
+// (consumer alias) and @norith/glimmerx-core (transitive dep) are bundled
+try {
+  setModifierManager(FUNCTIONAL_MODIFIER_MANAGER_FACTORY, Function.prototype);
+} catch (e) {
+  // Already registered
+}
+try {
+  setHelperManager(FUNCTIONAL_HELPER_MANAGER_FACTORY, Function.prototype);
+} catch (e) {
+  // Already registered
+}
 
 export { default as Owner, FactoryIdentifier } from './src/owner';
 export { default as renderComponent, RenderComponentOptions } from './src/renderComponent';

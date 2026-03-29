@@ -58,11 +58,14 @@ packages.forEach((name) => {
   pkg.version = newVersion;
 
   // Update internal cross-references to use the new version
+  // peerDependencies use caret ranges; dependencies use exact versions
   ['dependencies', 'devDependencies', 'peerDependencies'].forEach((depType) => {
     if (!pkg[depType]) return;
     Object.keys(pkg[depType]).forEach((dep) => {
       if (dep.startsWith('@norith/glimmerx-')) {
-        pkg[depType][dep] = newVersion;
+        const current = pkg[depType][dep];
+        const useCaret = depType === 'peerDependencies' && current.startsWith('^');
+        pkg[depType][dep] = useCaret ? `^${newVersion}` : newVersion;
       }
     });
   });
