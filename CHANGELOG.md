@@ -1,3 +1,52 @@
+# @norith/glimmerx-* Changelog
+
+Maintained fork of [glimmerjs/glimmer-experimental](https://github.com/glimmerjs/glimmer-experimental). See [CLAUDE.md](./CLAUDE.md) for full context.
+
+---
+
+## v1.0.4 (2026-03-28)
+
+#### :house: Internal
+* Bumped `@norith/glimmer-*` dependencies from `1.0.0` to `^1.0.1` to pick up debugging improvements
+
+## v1.0.3 (2026-03-28)
+
+#### :bug: Bug Fix
+* Fixed babel-preset `index.js` still referencing `@glimmer/babel-preset` instead of `@norith/glimmer-babel-preset`
+* Fixed blueprint `index.js` still referencing `@glimmer/blueprint` instead of `@norith/glimmer-blueprint`
+
+## v1.0.2 (2026-03-28)
+
+#### :bug: Bug Fix
+* Fixed compiled `dist/` output still referencing `@glimmer/component`, `@glimmer/core`, `@glimmer/tracking`, etc. instead of `@norith/glimmer-*`
+  * Root `index.ts`, `addon/index.js`, and `src/*.ts` files in component, core, helper, modifier, service, and ssr packages were missed in the initial rename
+  * Consumer apps no longer need `@glimmer/*` runtime aliases in their `package.json`
+
+## v1.0.1 (2026-03-28)
+
+#### :bug: Bug Fix
+* Removed `validate-peer-dependencies` runtime check from webpack-loader
+  * The check failed when consumers installed `@norith/glimmerx-babel-preset` under the alias `@glimmerx/babel-preset`
+* Removed peer dependency on `@norith/glimmerx-babel-preset` from webpack-loader (not needed at runtime)
+
+## v1.0.0 (2026-03-28)
+
+#### :house: Fork
+* All packages renamed from `@glimmerx/*` to `@norith/glimmerx-*`
+* Version reset to 1.0.0 (clean break from upstream 0.6.8)
+* Dependencies updated from `@glimmer/*@2.0.0-beta.21` to `@norith/glimmer-*` (snorith/glimmer.js fork)
+* Upgraded `@glimmer/syntax` in webpack-loader from `0.84.0` to `^0.92.0`
+* Upgraded TypeScript from 4.2 to 5.2
+* Babel preset, ESLint plugin, and webpack-loader support both `@glimmerx/*` and `@norith/glimmerx-*` import paths
+* Added `.mise.toml` (Node 20), `scripts/bump-version.js`, `scripts/publish-packages.js`
+* Added GitHub Actions publish workflow with Trusted Publishing OIDC
+* Removed obsolete deploy.yml (upstream gh-pages deployment)
+* Added CLAUDE.md, AGENTS.md, FORK.md, PLAN.md documentation
+
+---
+
+*Upstream changelog follows:*
+
 ## v0.6.8 (2022-09-06)
 
 #### :house: Internal
