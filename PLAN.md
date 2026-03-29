@@ -174,25 +174,25 @@ Add entry following existing format.
 
 ---
 
-## Phase D — Debugging Improvements (ON HOLD)
+## Phase D — Debugging Improvements — DONE
 
-Requires Phase B (published packages) to be complete first.
+### ~~D1. Patch @tracked decorator~~ DONE
+- File: `packages/@glimmer/tracking/src/tracked.ts` in `snorith/glimmer.js`
+- The `descriptorForField` function now wraps getter/setter in try/catch (DEBUG-only) that prepends `[ClassName#propertyName]` to tracking assertion error messages
+- Note: The original plan called for attaching `debugKey` to tracked tags via `@glimmer/validator`'s tag debug API. However, `@glimmer/validator@0.84.0` doesn't expose a direct `debugKey` API on tags — the `tagFor(self, key)` function internally associates the key, and the debug surface is `assertTagNotConsumed(tag, obj, keyName)` which already receives `obj` and `keyName`. The try/catch approach achieves the same result.
+- Published in `@norith/glimmer-tracking@1.0.1`
 
-### D1. Patch @tracked decorator in snorith/glimmer.js
-- File: `packages/@glimmer/tracking/src/tracked.ts`
-- Attach `debugKey` (format: `ClassName#propertyName`) to tracked tags via `@glimmer/validator`'s tag debug API
-- Dev-mode only (`NODE_ENV !== 'production'`)
+### ~~D2. Enrich render error messages~~ DONE
+- File: `packages/@glimmer/core/src/render-component/index.ts` in `snorith/glimmer.js`
+- Calls `setTrackingTransactionEnv` with a custom `debugMessage` that includes component class name, property name, and an actionable TIP about common causes
+- Published in `@norith/glimmer-core@1.0.1`
 
-### D2. Enrich render error messages in snorith/glimmer.js
-- File: `packages/@glimmer/core/src/` (render/revalidation loop)
-- Catch `@glimmer/validator` assertion errors and re-throw with component name context
-- Dev-mode only
+### ~~D3. Publish patch release~~ DONE
+- `@norith/glimmer-*@1.0.1` published (snorith/glimmer.js)
+- `@norith/glimmerx-*@1.0.4` published with `@norith/glimmer-*@^1.0.1` (snorith/glimmer-experimental)
 
-### D3. Publish patch release
-Use the workflow_dispatch publish workflow with `patch` release type.
-
-### D4. Update webapp dependencies
-Bump `@norith/glimmerx-component` (and transitively `@norith/glimmer-tracking`) in the webapp.
+### ~~D4. Update webapp dependencies~~ DONE
+- Webapp lockfile updated to pull `@norith/glimmerx-*@1.0.4`
 
 ---
 
