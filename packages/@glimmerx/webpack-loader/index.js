@@ -75,3 +75,5 @@ module.exports = function (source) {
   const { code, map } = extractSourceMap(output);
   this.callback(null, code, map);
 };
+
+module.exports.extractSourceMap = extractSourceMap;
