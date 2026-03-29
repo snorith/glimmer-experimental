@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-webpack-loader",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "GlimmerX Webpack Loader",
   "repository": "https://github.com/snorith/glimmer-experimental",
   "author": "Tom Dale <tom@tomdale.net>",
