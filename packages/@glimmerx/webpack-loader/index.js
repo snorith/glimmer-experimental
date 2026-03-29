@@ -36,6 +36,18 @@ const TEMPLATE_LITERAL_CONFIG = {
   includeTemplateTokens: true,
 };
 
+const SOURCE_MAP_URL_REGEX = /\n\/\/# sourceMappingURL=data:application\/json;charset=utf-8;base64,(.+)$/;
+
+function extractSourceMap(output) {
+  const match = output.match(SOURCE_MAP_URL_REGEX);
+  if (!match) {
+    return { code: output, map: null };
+  }
+  const code = output.slice(0, match.index);
+  const map = JSON.parse(Buffer.from(match[1], 'base64').toString('utf-8'));
+  return { code, map };
+}
+
 module.exports = function (source) {
   const options = getOptions(this);
 
@@ -45,22 +57,21 @@ module.exports = function (source) {
   });
 
   let filename = this._module.resource;
+  let config;
 
   if (filename.match(/\.(js|ts)$/)) {
-    let { output } = preprocessEmbeddedTemplates(
-      source,
-      Object.assign({ relativePath: filename }, TEMPLATE_LITERAL_CONFIG)
-    );
-
-    return output;
+    config = TEMPLATE_LITERAL_CONFIG;
   } else if (filename.match(/\.(gjs|gts)$/)) {
-    let { output } = preprocessEmbeddedTemplates(
-      source,
-      Object.assign({ relativePath: filename }, TEMPLATE_TAG_CONFIG)
-    );
-
-    return output;
+    config = TEMPLATE_TAG_CONFIG;
+  } else {
+    return source;
   }
 
-  return source;
+  let { output } = preprocessEmbeddedTemplates(
+    source,
+    Object.assign({ relativePath: filename }, config)
+  );
+
+  const { code, map } = extractSourceMap(output);
+  this.callback(null, code, map);
 };
