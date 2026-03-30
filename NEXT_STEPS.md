@@ -4,61 +4,43 @@ Potential improvements to the `@norith/glimmerx-*` and `@norith/glimmer-*` forke
 
 ---
 
-## 1. Eliminate Tree-Shaking Bare Reference Requirement
+## 1. ~~Eliminate Tree-Shaking Bare Reference Requirement~~ — Already Solved
 
-**Impact:** High — touches every component file, prevents the most common class of runtime bugs
-**Effort:** Medium
-**Repos:** `snorith/glimmer-experimental` (webpack-loader)
+**Status:** No loader change needed — the existing `scope()` mechanism already prevents tree-shaking.
 
-### The Problem
+### Investigation (2026-03-29)
 
-Every component file requires bare reference statements to prevent Webpack from tree-shaking imports that are only referenced in `hbs` templates:
+The `preprocessEmbeddedTemplates` function from `babel-plugin-htmlbars-inline-precompile` already extracts template locals via `getTemplateLocals()` and emits them in a `scope()` function:
 
-```typescript
-import Component, { hbs } from "@glimmerx/component";
-import PlainAwait from "components/PlainAwait";
-import Input from "components/Input";
-import { callFn, eq } from "libs/hbs_helpers";
-import { on } from "@glimmerx/modifier";
-
-// These bare references exist ONLY to prevent tree shaking
-PlainAwait
-Input
-callFn
-eq
-on
-```
-
-If a developer forgets a reference, the component silently fails at runtime — no build error, no warning. This is the most common source of "component not rendering" bugs.
-
-### The Solution
-
-The `@norith/glimmerx-webpack-loader` already calls `getTemplateLocals()` from `@glimmer/syntax` to extract all free variables from templates. It passes these as a `scope()` function in its output. The loader can be enhanced to also emit anti-tree-shaking side effects for each scope variable.
-
-**Current loader output:**
 ```javascript
-// Template preprocessed, but scope vars can still be tree-shaken
+// Input
+static template = hbs`<PlainAwait /><button {{on 'click' this.go}}>Go</button>`;
+
+// Output from preprocessEmbeddedTemplates
+static template = hbs(`...`, { scope() { return {PlainAwait, on}; } });
 ```
 
-**Enhanced loader output:**
-```javascript
-// Auto-generated: preserve scope variables referenced in template
-/* @__SIDE_EFFECTS__ */ PlainAwait;
-/* @__SIDE_EFFECTS__ */ Input;
-/* @__SIDE_EFFECTS__ */ callFn;
+The `scope()` function creates JavaScript references to all template-scoped variables. Webpack sees these references and keeps the imports alive — even in production mode with full tree-shaking. This was verified with a webpack production build: imported helpers referenced only in templates are preserved in the bundle.
+
+### What This Means for Consumer Apps
+
+**The bare reference statements are unnecessary and can be safely removed.** The `scope()` output already keeps imports alive. Developers can clean up their component files:
+
+```diff
+  import Component, { hbs } from "@glimmerx/component";
+  import PlainAwait from "components/PlainAwait";
+  import { on } from "@glimmerx/modifier";
+
+- // These bare references exist ONLY to prevent tree shaking
+- PlainAwait
+- on
+
+  export default class Foo extends Component {
+    static template = hbs`<PlainAwait /><button {{on 'click' this.go}}>Go</button>`;
+  }
 ```
 
-Or alternatively, use Webpack's `sideEffects` configuration or a custom Webpack plugin that marks template-referenced imports as having side effects.
-
-### Key Files
-
-- `snorith/glimmer-experimental: packages/@glimmerx/webpack-loader/index.js` — the loader that processes templates
-- The `TEMPLATE_LITERAL_CONFIG` and `TEMPLATE_TAG_CONFIG` objects configure `preprocessEmbeddedTemplates`
-- `getTemplateLocals()` from `@glimmer/syntax` already extracts the variable names
-
-### Verification
-
-After implementation, systematically remove all bare reference statements from a test component and verify it still renders correctly. Then apply across the codebase.
+This should be communicated to consumer app developers. No fork changes required.
 
 ---
 
