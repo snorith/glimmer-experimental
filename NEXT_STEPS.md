@@ -67,6 +67,7 @@ After implementation, systematically remove all bare reference statements from a
 **Impact:** Medium — significantly improves debugging experience
 **Effort:** Medium-High
 **Repos:** `snorith/glimmer-experimental` (webpack-loader, babel-preset)
+**Status:** Partially complete — loader-to-babel handoff fixed, Babel plugin gap remains
 
 ### The Problem
 
@@ -74,24 +75,38 @@ When a template has an error — wrong argument type, missing component, malform
 
 The tracking error improvements (v1.0.1) help with `@tracked` property errors specifically, but template compilation errors, runtime rendering errors, and Glint type errors in templates all still suffer from poor source mapping.
 
-### The Solution
+### What's Been Done
 
-The webpack-loader already passes `includeSourceMaps: true` to `preprocessEmbeddedTemplates`, but the source maps don't carry through the full compilation chain:
+**Fixed: Webpack loader source map passthrough.** The loader was calling `return output` which discards the source map. Now it extracts the inline `sourceMappingURL` data URI from the `preprocessEmbeddedTemplates` output, decodes it, and passes it to webpack via `this.callback(null, code, map)`. This allows babel-loader (the next loader in the chain) to receive and chain its own source maps on top.
 
-1. **Webpack loader** (`preprocessEmbeddedTemplates`) generates initial source maps for the template preprocessing step
-2. **Babel** (`@glimmerx/babel-preset` → `@glimmer/babel-preset` → `babel-plugin-htmlbars-inline-precompile`) compiles the template to JavaScript — this step may not preserve or chain the source maps correctly
-3. **Webpack** bundles the output — if input source maps are missing or broken, the final bundle maps are wrong
+- Changed `packages/@glimmerx/webpack-loader/index.js` to use `this.callback()` instead of `return`
+- Added `extractSourceMap()` helper to parse inline base64 source maps
+- Added unit tests (3) and webpack integration test (1)
 
-The fix involves ensuring source maps are correctly chained through each step:
-- Verify the webpack-loader passes source maps to the next loader (babel-loader) via the standard Webpack `this.callback(null, code, sourceMap)` pattern
-- Verify `babel-plugin-htmlbars-inline-precompile` preserves source maps during template compilation
-- Test that the final Webpack output maps template errors back to the `hbs` tagged template literal
+**Result:** Non-template code in compiled output now correctly maps back to original source files. The original source content (including `hbs` template text) is preserved in the source map's `sourcesContent`.
+
+### Remaining Gap
+
+The compiled **template wire format is unmapped**. When `babel-plugin-htmlbars-inline-precompile` replaces `hbs\`<h1>Hello</h1>\`` with `createTemplateFactory({ block: "[[[10,\"h1\"]...]]" })`, the generated Babel AST nodes have no `loc` data. Specifically:
+
+- The `createTemplateFactory(...)` call maps to the wrong line (class closing brace instead of the `hbs` line)
+- The compiled opcode string (`"block": "..."`) is completely unmapped
+- The original `hbs` template line has zero reverse mappings — nothing in the output points back to it
+
+### Potential Fix
+
+Patch `babel-plugin-htmlbars-inline-precompile` (peer dep, `^5.2.1`) to preserve `loc` on the AST nodes it generates. When building the `createTemplateFactory(...)` replacement expression, copy the source location from the original `hbs` tagged template literal node. This would make Babel's source map generation correctly attribute the compiled output to the template source line.
+
+This is in the peer dependency package, not in forked code. Options:
+1. Fork `babel-plugin-htmlbars-inline-precompile` and patch it
+2. Contribute the fix upstream to `ember-cli/babel-plugin-htmlbars-inline-precompile`
+3. Add a post-transform Babel plugin that corrects `loc` on `createTemplateFactory` calls
 
 ### Key Files
 
-- `snorith/glimmer-experimental: packages/@glimmerx/webpack-loader/index.js` — source map generation
-- `snorith/glimmer-experimental: packages/@glimmerx/babel-preset/index.js` — babel preset that wraps the compiler
-- `snorith/glimmer.js: packages/@glimmer/babel-preset/index.js` — the actual compiler integration
+- `snorith/glimmer-experimental: packages/@glimmerx/webpack-loader/index.js` — source map extraction and passthrough (DONE)
+- `snorith/glimmer-experimental: packages/@glimmerx/webpack-loader/test/` — unit and integration tests (DONE)
+- `babel-plugin-htmlbars-inline-precompile` (peer dep) — AST node `loc` preservation (TODO)
 
 ---
 
