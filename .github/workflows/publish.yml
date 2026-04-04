@@ -63,4 +63,6 @@ jobs:
           git push --tags
 
       - name: Publish to npm
-        run: node scripts/publish-packages.js --provenance
+        run: |
+          sed -i '/_authToken/d' "$GITHUB_WORKSPACE/.npmrc" 2>/dev/null || true
+          node scripts/publish-packages.js --provenance
