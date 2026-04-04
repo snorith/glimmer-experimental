@@ -3,7 +3,10 @@
   "version": "1.0.7",
   "description": "A prettier formatter for glimmer component templates",
   "main": "index.js",
-  "repository": "https://github.com/snorith/glimmer-experimental",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snorith/glimmer-experimental"
+  },
   "author": "Matt Edwards <matt.m.edwards@gmail.com>",
   "license": "MIT",
   "private": false,
