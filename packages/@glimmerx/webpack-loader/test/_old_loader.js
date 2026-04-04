@@ -30,7 +30,7 @@ const TEMPLATE_LITERAL_CONFIG = {
   getTemplateLocalsExportPath: 'getTemplateLocals',
 
   importIdentifier: 'hbs',
-  importPath: ['@glimmerx/component', '@norith/glimmerx-component'],
+  importPath: '@glimmerx/component',
 
   includeSourceMaps: true,
   includeTemplateTokens: true,
