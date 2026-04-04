@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-eslint-plugin",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "ESLint Plugin to enable and streamline glimmerx development",
   "main": "index.js",
   "repository": "https://github.com/snorith/glimmer-experimental",
