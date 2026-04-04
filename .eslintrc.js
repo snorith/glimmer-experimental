@@ -11,7 +11,7 @@ module.exports = {
   extends: ['eslint:recommended'],
   plugins: ['@typescript-eslint', '@glimmerx'],
   rules: {
-    '@norith/glimmerx-template-vars': 'error',
+    '@glimmerx/template-vars': 'error',
   },
   overrides: [
     // node files
@@ -83,7 +83,7 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'off',
 
         // We should also try to remove this eventually
-        '@typescript-eslint/ban-ts-ignore': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
 
         // disabling this one because of DEBUG APIs, if we ever find a better
         // way to suport those we should re-enable it

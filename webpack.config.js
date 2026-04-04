@@ -51,7 +51,11 @@ const browserConfig = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@norith/glimmerx-babel-preset', '@babel/preset-typescript', '@babel/preset-env'],
+              presets: [
+                '@norith/glimmerx-babel-preset',
+                ['@babel/preset-typescript', { onlyRemoveTypeImports: true }],
+                '@babel/preset-env',
+              ],
             },
           },
           '@norith/glimmerx-webpack-loader',
@@ -87,7 +91,7 @@ const nodeConfig = {
             options: {
               presets: [
                 '@norith/glimmerx-babel-preset',
-                '@babel/preset-typescript',
+                ['@babel/preset-typescript', { onlyRemoveTypeImports: true }],
                 [
                   '@babel/preset-env',
                   {

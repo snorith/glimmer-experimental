@@ -1,5 +1,5 @@
 const path = require('path');
-const PRETTIER_PLUGIN = path.resolve(__dirname, '../../../index');
+const PRETTIER_PLUGIN = path.resolve(__dirname, '../../../index.js');
 
 module.exports = {
   singleQuote: true,

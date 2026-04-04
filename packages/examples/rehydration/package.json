@@ -9,10 +9,10 @@
   "private": true,
   "scripts": {},
   "dependencies": {
-    "@norith/glimmerx-core": "1.0.0",
-    "@norith/glimmerx-component": "1.0.0",
-    "@norith/glimmerx-modifier": "1.0.0",
-    "@norith/glimmerx-ssr": "1.0.0"
+    "@norith/glimmerx-core": "1.0.5",
+    "@norith/glimmerx-component": "1.0.5",
+    "@norith/glimmerx-modifier": "1.0.5",
+    "@norith/glimmerx-ssr": "1.0.5"
   },
   "volta": {
     "node": "12.10.0",

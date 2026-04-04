@@ -11,7 +11,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@norith/glimmerx-core": "1.0.0",
+    "@norith/glimmerx-core": "1.0.5",
     "basic-addon": "0.6.8"
   },
   "devDependencies": {

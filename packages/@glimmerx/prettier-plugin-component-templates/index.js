@@ -1,38 +1,100 @@
-const babelParsers = require('prettier/parser-babel').parsers;
-const typescriptParsers = require('prettier/parser-typescript').parsers;
+const babelParsers = require('prettier/plugins/babel').parsers;
+const typescriptParsers = require('prettier/plugins/typescript').parsers;
+const estreePrinter = require('prettier/plugins/estree').printers.estree;
 
 const {
   builders: { group, indent, softline, hardline },
-  utils: { stripTrailingHardline, getDocParts },
 } = require('prettier').doc;
 
-function startsWithHardline(doc) {
-  const [first, second] = getDocParts(doc.contents);
-  return first && first.type === 'line' && first.hard && second && second.type === 'break-parent';
+function normalizeDoc(doc) {
+  if (Array.isArray(doc)) {
+    return doc.map((item) => normalizeDoc(item));
+  }
+
+  if (!doc || typeof doc !== 'object') {
+    return doc;
+  }
+
+  if (doc.type === 'concat' && Array.isArray(doc.parts)) {
+    return doc.parts.map((item) => normalizeDoc(item));
+  }
+
+  const normalized = { ...doc };
+  for (const key of ['contents', 'parts', 'breakContents', 'flatContents']) {
+    if (key in normalized) {
+      normalized[key] = normalizeDoc(normalized[key]);
+    }
+  }
+
+  if (Array.isArray(normalized.expandedStates)) {
+    normalized.expandedStates = normalized.expandedStates.map((item) => normalizeDoc(item));
+  }
+
+  return normalized;
 }
 
-function formatHbs(path, print, textToDoc, options) {
+function firstDocPart(doc) {
+  if (Array.isArray(doc)) {
+    for (const part of doc) {
+      const first = firstDocPart(part);
+      if (first !== undefined) {
+        return first;
+      }
+    }
+
+    return undefined;
+  }
+
+  if (doc === '' || doc === null || doc === undefined) {
+    return undefined;
+  }
+
+  if (typeof doc === 'string') {
+    return doc.length > 0 ? doc : undefined;
+  }
+
+  if (typeof doc !== 'object') {
+    return doc;
+  }
+
+  if (doc.contents !== undefined) {
+    return firstDocPart(doc.contents);
+  }
+
+  if (doc.parts !== undefined) {
+    return firstDocPart(doc.parts);
+  }
+
+  return doc;
+}
+
+function startsWithHardline(doc) {
+  const first = firstDocPart(doc);
+  return first && typeof first === 'object' && first.type === 'line' && first.hard === true;
+}
+
+async function formatHbs(path, print, textToDoc, options) {
   const node = path.getValue();
   const text = node.quasis.map((quasi) => quasi.value.raw).join('');
 
   const isMultiLine = text.startsWith('\n') || node.loc.end.column >= options.printWidth;
 
-  let doc = stripTrailingHardline(
-    textToDoc(text, {
+  const templateDoc = normalizeDoc(
+    await textToDoc(text, {
       parser: 'glimmer',
       singleQuote: options.hbsSingleQuote,
     })
   );
 
   if (!isMultiLine) {
-    return group(['`', doc, '`']);
+    return group(['`', templateDoc, '`']);
   }
 
-  if (startsWithHardline(doc)) {
-    return group(['`', indent(group(doc)), softline, '`']);
+  if (startsWithHardline(templateDoc)) {
+    return group(['`', indent(templateDoc), softline, '`']);
   }
 
-  return group(['`', indent([hardline, group(doc)]), softline, '`']);
+  return group(['`', indent([hardline, templateDoc]), softline, '`']);
 }
 
 function isHbs(path) {
@@ -51,52 +113,24 @@ function isHbs(path) {
   );
 }
 
-// Store reference to built-in estree printer
-let estreePrinter = null;
-
-function getEstreePrinter(options) {
-  if (!estreePrinter) {
-    for (const plugin of options.plugins) {
-      if (plugin.printers?.estree) {
-        estreePrinter = plugin.printers.estree;
-        break;
-      }
-    }
+function embed(path, options) {
+  if (!isHbs(path)) {
+    return undefined;
   }
-  return estreePrinter;
-}
 
-function embed(path, print, textToDoc, options) {
-  if (isHbs(path)) {
-    const output = formatHbs(path, print, textToDoc, {
+  return async (textToDoc, print) =>
+    formatHbs(path, print, textToDoc, {
       ...options,
       singleQuote: options.hbsSingleQuote,
     });
-    return output;
-  }
-  // Delegate to built-in estree embed
-  const printer = getEstreePrinter(options);
-  if (printer?.embed) {
-    return printer.embed(path, print, textToDoc, options);
-  }
-  return undefined;
-}
-
-function print(path, options, print) {
-  // Delegate to built-in estree print
-  const printer = getEstreePrinter(options);
-  if (printer?.print) {
-    return printer.print(path, options, print);
-  }
-  throw new Error('Could not find estree printer');
 }
 
 const languages = [
   {
     name: 'glimmer-experimental',
     group: 'JavaScript',
-    parsers: ['babel', 'babel-ts', 'typescript'],
-    extensions: ['.gjs', '.js', '.ts'],
+    parsers: ['babel'],
+    extensions: ['.gjs'],
     vscodeLanguageIds: ['javascript'],
   },
 ];
@@ -104,26 +138,16 @@ const languages = [
 const parsers = {
   babel: {
     ...babelParsers.babel,
-    // Keep original astFormat
-    parse(text, parsers, options) {
-      const ast = babelParsers.babel.parse(text, parsers, options);
-      return ast;
-    },
   },
   typescript: {
     ...typescriptParsers.typescript,
-    // Keep original astFormat
-    parse(text, parsers, options) {
-      const ast = typescriptParsers.typescript.parse(text, parsers, options);
-      return ast;
-    },
   },
 };
 
 const printers = {
   estree: {
+    ...estreePrinter,
     embed,
-    print,
   },
 };
 
