@@ -30,13 +30,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '22'
+          # Pin to 22.14.0 to avoid npm regression in 22.22.2 (MODULE_NOT_FOUND promise-retry)
+          node-version: '22.14.0'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Upgrade npm for Trusted Publishing OIDC
         run: |
-          corepack enable
-          corepack prepare npm@latest --activate
+          npm install -g npm@latest
           npm --version
 
       - name: Install dependencies
@@ -52,17 +52,18 @@ jobs:
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
+      - name: Publish to npm
+        run: node scripts/publish-packages.js --provenance
+
       - name: Commit and tag
+        # Only tag after successful publish to avoid orphaned tags on failure
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Release v${{ steps.version.outputs.version }}"
-          git tag "v${{ steps.version.outputs.version }}"
+          # Force-push only this specific tag to handle reruns after failures
+          git tag -f "v${{ steps.version.outputs.version }}"
           git push
-          git push --tags
-
-      - name: Publish to npm
-        run: |
-          sed -i '/_authToken/d' "$GITHUB_WORKSPACE/.npmrc" 2>/dev/null || true
-          node scripts/publish-packages.js --provenance
+          git push origin "+refs/tags/v${{ steps.version.outputs.version }}"
