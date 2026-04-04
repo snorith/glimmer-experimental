@@ -27,5 +27,8 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
+  },
+  "dependencies": {
+    "@glimmer/syntax": "0.84.0"
   }
 }

@@ -8,6 +8,7 @@ export interface FactoryIdentifier {
 }
 
 const SERVICES_CACHE = Symbol('Services');
+const LOOKUP_STACK = new Set<string>();
 
 function isConstructor(func: unknown): func is { new (owner: Owner): unknown } {
   return (
@@ -17,7 +18,7 @@ function isConstructor(func: unknown): func is { new (owner: Owner): unknown } {
 
 export default class Owner {
   private [SERVICES_CACHE]: Map<string, unknown>;
-  private services;
+  private services: Dict<unknown>;
 
   constructor(services: Dict<unknown>) {
     this[SERVICES_CACHE] = new Map<string, unknown>();
@@ -37,13 +38,24 @@ export default class Owner {
 
     // If the service `name` does not exist in the cache
     if (!this[SERVICES_CACHE].has(name) && this.services[name]) {
+      if (DEBUG && LOOKUP_STACK.has(name)) {
+        const stack = Array.from(LOOKUP_STACK).concat(name).join(' -> ');
+        throw new Error(`Circular dependency detected: ${stack}`);
+      }
+
       const maybeConstructor = this.services[name];
+      
+      if (DEBUG) LOOKUP_STACK.add(name);
+      
+      try {
+        const someService = isConstructor(maybeConstructor)
+          ? new maybeConstructor(this)
+          : maybeConstructor;
 
-      const someService = isConstructor(maybeConstructor)
-        ? new maybeConstructor(this)
-        : maybeConstructor;
-
-      this[SERVICES_CACHE].set(name, someService);
+        this[SERVICES_CACHE].set(name, someService);
+      } finally {
+        if (DEBUG) LOOKUP_STACK.delete(name);
+      }
     }
 
     return this[SERVICES_CACHE].get(name);

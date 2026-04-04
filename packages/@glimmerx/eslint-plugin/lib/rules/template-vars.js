@@ -1,9 +1,16 @@
 const { getTemplateLocals } = require('@glimmer/syntax');
 
+const GLIMMERX_IMPORTS = [
+  '@glimmerx/component',
+  '@norith/glimmerx-component',
+  '@glimmerx/core',
+  '@norith/glimmerx-core',
+];
+
 module.exports = {
   docs: {
     description:
-      'Components / Helpers referenced in hbs template literals should not trigger no-unused-vars failures, but should trigger no-undef if they are not defined propery',
+      'Components / Helpers referenced in hbs template literals should not trigger no-unused-vars failures, but should trigger no-undef if they are not defined properly',
     category: 'Variables',
     recommended: true,
   },
@@ -11,9 +18,7 @@ module.exports = {
     messages: {
       undefToken: 'Token {{ token }} is used in an hbs tagged template literal, but is not defined',
     },
-    // example: '@glimmerx/glimmerx/template-vars': [2, 'unused-only', { nativeTokens: ['anImplicitToken'] }]
     schema: [
-      // Configures whether to only prevent no-unused-vars errors ('unused-only), or also throw an eslint error when a template token is undefined ('all')
       {
         enum: ['unused-only', 'all'],
         default: 'all',
@@ -21,9 +26,6 @@ module.exports = {
       {
         type: 'object',
         properties: {
-          // keywords will will always be 'nativeTokens'
-          // but you may add more via this configuration. One use-case is if a token is added to the
-          // Javascript code implicitly (such as via a babel transform)
           nativeTokens: {
             type: 'array',
             items: {
@@ -36,28 +38,56 @@ module.exports = {
     ],
   },
   create(context) {
-    let isGlimmerSfc = false;
-    let hbsImportId;
-
     const [mode = 'all', configOpts] = context.options;
-    let nativeTokens = (configOpts && configOpts.nativeTokens) || [];
+    const nativeTokens = (configOpts && configOpts.nativeTokens) || [];
+
+    function isHbs(node) {
+      if (node.type !== 'TaggedTemplateExpression') return false;
+
+      // Handle direct hbs`...`
+      if (node.tag.type === 'Identifier') {
+        const variable = context.getScope().set.get(node.tag.name) || 
+                         context.getScope().through.find(ref => ref.identifier.name === node.tag.name)?.resolved;
+        
+        if (variable) {
+          return variable.defs.some(def => {
+            if (def.type === 'ImportBinding') {
+              const importDeclaration = def.parent;
+              return GLIMMERX_IMPORTS.includes(importDeclaration.source.value) && 
+                     def.node.imported && def.node.imported.name === 'hbs';
+            }
+            return false;
+          });
+        }
+      }
+
+      // Handle namespaces (e.g. gmx.hbs`...`)
+      if (node.tag.type === 'MemberExpression' && node.tag.property.name === 'hbs') {
+        const objectName = node.tag.object.name;
+        const variable = context.getScope().set.get(objectName) || 
+                         context.getScope().through.find(ref => ref.identifier.name === objectName)?.resolved;
+        
+        if (variable) {
+          return variable.defs.some(def => {
+            if (def.type === 'ImportBinding') {
+              const importDeclaration = def.parent;
+              return GLIMMERX_IMPORTS.includes(importDeclaration.source.value) && 
+                     (def.node.type === 'ImportNamespaceSpecifier' || def.node.type === 'ImportDefaultSpecifier');
+            }
+            return false;
+          });
+        }
+      }
+
+      return false;
+    }
 
     return {
-      ImportSpecifier(node) {
-        if (isGlimmerSfc || (node.parent.source.value !== '@glimmerx/component' && node.parent.source.value !== '@norith/glimmerx-component')) {
-          return;
-        }
-        const importedName = node.imported.name;
-        const identifier = node.local.name;
-        if (importedName === 'hbs') {
-          isGlimmerSfc = true;
-          hbsImportId = identifier;
-        }
-      },
       TaggedTemplateExpression(node) {
-        if (!isGlimmerSfc || node.tag.name !== hbsImportId) {
+        if (!isHbs(node)) {
           return;
         }
+
         const templateElementNode = node.quasi.quasis[0];
         const templateString = templateElementNode.value.raw;
 

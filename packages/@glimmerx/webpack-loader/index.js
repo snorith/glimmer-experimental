@@ -30,7 +30,12 @@ const TEMPLATE_LITERAL_CONFIG = {
   getTemplateLocalsExportPath: 'getTemplateLocals',
 
   importIdentifier: 'hbs',
-  importPath: ['@glimmerx/component', '@norith/glimmerx-component'],
+  importPath: [
+    '@glimmerx/component',
+    '@norith/glimmerx-component',
+    '@glimmerx/core',
+    '@norith/glimmerx-core',
+  ],
 
   includeSourceMaps: true,
   includeTemplateTokens: true,
@@ -44,8 +49,14 @@ function extractSourceMap(output) {
     return { code: output, map: null };
   }
   const code = output.slice(0, match.index);
-  const map = JSON.parse(Buffer.from(match[1], 'base64').toString('utf-8'));
-  return { code, map };
+  const mapData = match[1];
+  try {
+    const map = JSON.parse(Buffer.from(mapData, 'base64').toString('utf-8'));
+    return { code, map };
+  } catch (e) {
+    // If JSON parsing fails, return the output as is
+    return { code: output, map: null };
+  }
 }
 
 module.exports = function (source) {

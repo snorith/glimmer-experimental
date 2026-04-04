@@ -22,6 +22,14 @@ module.exports = function (api, options) {
               export: 'hbs',
               useTemplateLiteralProposalSemantics: 1,
             },
+            '@glimmerx/core': {
+              export: 'hbs',
+              useTemplateLiteralProposalSemantics: 1,
+            },
+            '@norith/glimmerx-core': {
+              export: 'hbs',
+              useTemplateLiteralProposalSemantics: 1,
+            },
 
             'TEMPLATE-TAG-MODULE': {
               export: 'GLIMMER_TEMPLATE',
