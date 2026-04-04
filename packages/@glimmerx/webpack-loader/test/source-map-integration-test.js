@@ -53,7 +53,9 @@ function runWebpack(entry, devtool) {
       if (err) return reject(err);
       if (stats.hasErrors()) {
         const errors = stats.toJson().errors;
-        return reject(new Error(errors.map(e => typeof e === 'string' ? e : e.message).join('\n')));
+        return reject(
+          new Error(errors.map((e) => (typeof e === 'string' ? e : e.message)).join('\n'))
+        );
       }
 
       const bundlePath = path.resolve(__dirname, 'dist', `${entry}.bundle.js`);
@@ -74,7 +76,7 @@ describe('webpack source map integration', function () {
     // Clean up dist directory
     const distDir = path.resolve(__dirname, 'dist');
     if (fs.existsSync(distDir)) {
-      fs.readdirSync(distDir).forEach(f => fs.unlinkSync(path.join(distDir, f)));
+      fs.readdirSync(distDir).forEach((f) => fs.unlinkSync(path.join(distDir, f)));
       fs.rmdirSync(distDir);
     }
   });
@@ -86,7 +88,7 @@ describe('webpack source map integration', function () {
     try {
       // The source map should contain our original fixture file
       const sources = consumer.sources;
-      const fixtureSource = sources.find(s => s.includes('component.js'));
+      const fixtureSource = sources.find((s) => s.includes('component.js'));
       expect(fixtureSource, 'source map should reference component.js').to.exist;
 
       // The original source content should contain the hbs template

@@ -47,7 +47,7 @@ module('Modifier Tests', () => {
     }
 
     class MyComponent extends Component {
-      static template = hbs`<div {{myModifier "foo" "bar"}} class="test-element"></div>`;
+      static template = hbs`<div class="test-element" {{myModifier "foo" "bar"}}></div>`;
     }
 
     const element = document.getElementById('qunit-fixture')!;

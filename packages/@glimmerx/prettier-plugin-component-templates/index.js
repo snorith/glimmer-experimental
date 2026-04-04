@@ -1,14 +1,10 @@
 const babelParsers = require('prettier/parser-babel').parsers;
 const typescriptParsers = require('prettier/parser-typescript').parsers;
 
-const { esTree } = require('./lib/util');
-
 const {
   builders: { group, indent, softline, hardline },
   utils: { stripTrailingHardline, getDocParts },
 } = require('prettier').doc;
-
-const comments = require('./lib/comments');
 
 function startsWithHardline(doc) {
   const [first, second] = getDocParts(doc.contents);
@@ -55,6 +51,21 @@ function isHbs(path) {
   );
 }
 
+// Store reference to built-in estree printer
+let estreePrinter = null;
+
+function getEstreePrinter(options) {
+  if (!estreePrinter) {
+    for (const plugin of options.plugins) {
+      if (plugin.printers?.estree) {
+        estreePrinter = plugin.printers.estree;
+        break;
+      }
+    }
+  }
+  return estreePrinter;
+}
+
 function embed(path, print, textToDoc, options) {
   if (isHbs(path)) {
     const output = formatHbs(path, print, textToDoc, {
@@ -63,19 +74,28 @@ function embed(path, print, textToDoc, options) {
     });
     return output;
   }
-
-  return esTree(options).embed(path, print, textToDoc, options);
+  // Delegate to built-in estree embed
+  const printer = getEstreePrinter(options);
+  if (printer?.embed) {
+    return printer.embed(path, print, textToDoc, options);
+  }
+  return undefined;
 }
 
 function print(path, options, print) {
-  return esTree(options).print(path, options, print);
+  // Delegate to built-in estree print
+  const printer = getEstreePrinter(options);
+  if (printer?.print) {
+    return printer.print(path, options, print);
+  }
+  throw new Error('Could not find estree printer');
 }
 
 const languages = [
   {
     name: 'glimmer-experimental',
     group: 'JavaScript',
-    parsers: ['babel', 'babel-ts', 'typescript'], // Which parsers do we want to support?
+    parsers: ['babel', 'babel-ts', 'typescript'],
     extensions: ['.gjs', '.js', '.ts'],
     vscodeLanguageIds: ['javascript'],
   },
@@ -84,16 +104,15 @@ const languages = [
 const parsers = {
   babel: {
     ...babelParsers.babel,
-    astFormat: 'esTree',
+    // Keep original astFormat
     parse(text, parsers, options) {
       const ast = babelParsers.babel.parse(text, parsers, options);
       return ast;
     },
   },
-  // babel-ts?
   typescript: {
     ...typescriptParsers.typescript,
-    astFormat: 'esTree',
+    // Keep original astFormat
     parse(text, parsers, options) {
       const ast = typescriptParsers.typescript.parse(text, parsers, options);
       return ast;
@@ -102,10 +121,9 @@ const parsers = {
 };
 
 const printers = {
-  esTree: {
+  estree: {
     embed,
     print,
-    ...comments,
   },
 };
 

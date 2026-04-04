@@ -19,7 +19,6 @@
     "prepublishOnly": "scripts/build.js",
     "problems": "tsc -p tsconfig.json --noEmit",
     "start": "webpack-dev-server",
-    "storybook": "yarn build && yarn workspace basic-example-app storybook",
     "test": "yarn format:check && yarn lint && testem ci && yarn test:babel-plugins && yarn test:types && yarn test:prettier",
     "test:babel-plugins": "mocha -r esm --timeout 5000 packages/@glimmerx/babel-preset/test packages/@glimmerx/eslint-plugin/test/lib/rules",
     "test:ember": "yarn workspace basic-addon ember try:one",

@@ -3,7 +3,6 @@
 const path = require('path');
 const fs = require('fs-extra');
 const { promisify } = require('util');
-const buildStorybook = require('./buildStorybook');
 
 const exec = promisify(require('child_process').exec);
 const glob = promisify(require('glob'));
@@ -31,7 +30,6 @@ const glob = promisify(require('glob'));
   await createDirs(packages.map((pkg) => pkg.to));
   await move(packages);
 
-  await buildStorybook();
 
   console.log('\n\nDone');
 })();

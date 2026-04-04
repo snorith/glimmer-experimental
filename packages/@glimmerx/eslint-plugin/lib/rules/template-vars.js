@@ -46,15 +46,19 @@ module.exports = {
 
       // Handle direct hbs`...`
       if (node.tag.type === 'Identifier') {
-        const variable = context.getScope().set.get(node.tag.name) || 
-                         context.getScope().through.find(ref => ref.identifier.name === node.tag.name)?.resolved;
-        
+        const variable =
+          context.getScope().set.get(node.tag.name) ||
+          context.getScope().through.find((ref) => ref.identifier.name === node.tag.name)?.resolved;
+
         if (variable) {
-          return variable.defs.some(def => {
+          return variable.defs.some((def) => {
             if (def.type === 'ImportBinding') {
               const importDeclaration = def.parent;
-              return GLIMMERX_IMPORTS.includes(importDeclaration.source.value) && 
-                     def.node.imported && def.node.imported.name === 'hbs';
+              return (
+                GLIMMERX_IMPORTS.includes(importDeclaration.source.value) &&
+                def.node.imported &&
+                def.node.imported.name === 'hbs'
+              );
             }
             return false;
           });
@@ -64,15 +68,19 @@ module.exports = {
       // Handle namespaces (e.g. gmx.hbs`...`)
       if (node.tag.type === 'MemberExpression' && node.tag.property.name === 'hbs') {
         const objectName = node.tag.object.name;
-        const variable = context.getScope().set.get(objectName) || 
-                         context.getScope().through.find(ref => ref.identifier.name === objectName)?.resolved;
-        
+        const variable =
+          context.getScope().set.get(objectName) ||
+          context.getScope().through.find((ref) => ref.identifier.name === objectName)?.resolved;
+
         if (variable) {
-          return variable.defs.some(def => {
+          return variable.defs.some((def) => {
             if (def.type === 'ImportBinding') {
               const importDeclaration = def.parent;
-              return GLIMMERX_IMPORTS.includes(importDeclaration.source.value) && 
-                     (def.node.type === 'ImportNamespaceSpecifier' || def.node.type === 'ImportDefaultSpecifier');
+              return (
+                GLIMMERX_IMPORTS.includes(importDeclaration.source.value) &&
+                (def.node.type === 'ImportNamespaceSpecifier' ||
+                  def.node.type === 'ImportDefaultSpecifier')
+              );
             }
             return false;
           });

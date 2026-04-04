@@ -25,7 +25,8 @@ describe('extractSourceMap', function () {
   it('handles multiline code before the source map comment', function () {
     const sourceMap = { version: 3, file: 'test.js', sources: ['test.js'], mappings: 'AAAA;AACA' };
     const encoded = Buffer.from(JSON.stringify(sourceMap)).toString('base64');
-    const codeBody = 'import { hbs } from "@glimmerx/component";\nclass Foo {}\nexport default Foo;';
+    const codeBody =
+      'import { hbs } from "@glimmerx/component";\nclass Foo {}\nexport default Foo;';
     const output = `${codeBody}\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,${encoded}`;
 
     const { code, map } = extractSourceMap(output);

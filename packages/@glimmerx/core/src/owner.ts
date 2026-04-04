@@ -44,9 +44,9 @@ export default class Owner {
       }
 
       const maybeConstructor = this.services[name];
-      
+
       if (DEBUG) LOOKUP_STACK.add(name);
-      
+
       try {
         const someService = isConstructor(maybeConstructor)
           ? new maybeConstructor(this)

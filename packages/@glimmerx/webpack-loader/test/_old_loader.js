@@ -36,7 +36,8 @@ const TEMPLATE_LITERAL_CONFIG = {
   includeTemplateTokens: true,
 };
 
-const SOURCE_MAP_URL_REGEX = /\n\/\/# sourceMappingURL=data:application\/json;charset=utf-8;base64,(.+)$/;
+const SOURCE_MAP_URL_REGEX =
+  /\n\/\/# sourceMappingURL=data:application\/json;charset=utf-8;base64,(.+)$/;
 
 function extractSourceMap(output) {
   const match = output.match(SOURCE_MAP_URL_REGEX);

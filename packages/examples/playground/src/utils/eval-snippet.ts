@@ -15,8 +15,7 @@ const modules = {
   '@norith/glimmerx-service': _xService,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function require(moduleName: keyof typeof modules): unknown {
+function requireModule(moduleName: keyof typeof modules): unknown {
   return modules[moduleName];
 }
 
@@ -25,10 +24,14 @@ export function evalSnippet(code: string): {
   services?: { [key: string]: unknown };
 } {
   const compiled = compile(code);
+  type SnippetExports = { default?: Component; services?: { [key: string]: unknown } };
+  const exports: SnippetExports = {};
+  const moduleFactory = new Function('require', 'exports', `"use strict";\n${compiled.code}`) as (
+    require: (name: keyof typeof modules) => unknown,
+    exports: SnippetExports
+  ) => void;
 
-  const exports = {};
-
-  eval(compiled.code);
+  moduleFactory(requireModule, exports);
 
   return exports as { default: Component; services?: { [key: string]: unknown } };
 }
