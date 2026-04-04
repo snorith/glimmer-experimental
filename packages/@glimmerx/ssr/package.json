@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-ssr",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "SSR functionality",
   "main": "dist/commonjs/index.js",
   "module": "dist/modules/index.js",
@@ -19,7 +19,7 @@
     "@norith/glimmer-ssr": "^1.0.1"
   },
   "peerDependencies": {
-    "@norith/glimmerx-core": "^1.0.5"
+    "@norith/glimmerx-core": "^1.0.6"
   },
   "publishConfig": {
     "access": "public",
