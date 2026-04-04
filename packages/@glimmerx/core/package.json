@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-core",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Core rendering functionality",
   "main": "dist/commonjs/index.js",
   "module": "dist/modules/index.js",
