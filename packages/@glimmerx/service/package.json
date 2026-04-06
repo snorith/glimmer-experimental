@@ -23,7 +23,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@norith/glimmer-debug": "^1.0.1",
+    "@norith/glimmer-debug": "^1.0.2",
     "@glimmer/env": "^0.1.7",
     "ember-cli-babel": "^7.26.2"
   },

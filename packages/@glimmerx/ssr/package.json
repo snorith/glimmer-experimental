@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@glimmer/interfaces": "0.84.0",
-    "@norith/glimmer-ssr": "^1.0.1"
+    "@norith/glimmer-ssr": "^1.0.2"
   },
   "peerDependencies": {
     "@norith/glimmerx-core": "^1.0.8"

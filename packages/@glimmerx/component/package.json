@@ -18,8 +18,8 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@norith/glimmer-component": "^1.0.1",
-    "@norith/glimmer-tracking": "^1.0.1",
+    "@norith/glimmer-component": "^1.0.2",
+    "@norith/glimmer-tracking": "^1.0.2",
     "ember-cli-babel": "^7.26.2",
     "ember-cli-babel-plugin-helpers": "^1.1.0",
     "ember-cli-htmlbars": "^5.7.1",

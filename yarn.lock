@@ -2564,10 +2564,23 @@
     babel-plugin-debug-macros "^0.3.4"
     babel-plugin-htmlbars-inline-precompile "^5.2.0"
 
-"@norith/glimmer-blueprint@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@norith/glimmer-blueprint/-/glimmer-blueprint-1.0.1.tgz#4b3f9a3e13b93368874b604fa58b2966b7800407"
-  integrity sha512-LpChOpOHRsXH4j9kkdWZcxr6afHQGbbkh3RzOWyK3PyAsb3qnFi4WcNnB1VuQSlsg3MLyJhVtUuwE8YrNBxycg==
+"@norith/glimmer-babel-preset@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-babel-preset/-/glimmer-babel-preset-1.0.2.tgz#4f99d8aa4aedb375c82dc6fdec51f0732692890e"
+  integrity sha512-e0zxlOJqNm6XB4J7hDeNasFCW82e5IuYBGjUD8eTttzLTZGd++dHjtbIL3pQr0FKzQ56a3NT8GswO48GQ6Qyyg==
+  dependencies:
+    "@babel/plugin-proposal-class-properties" "^7.8.3"
+    "@babel/plugin-proposal-decorators" "^7.8.3"
+    "@babel/plugin-proposal-private-methods" "^7.13.0"
+    "@glimmer/compiler" "0.84.0"
+    "@glimmer/vm-babel-plugins" "0.84.0"
+    babel-plugin-debug-macros "^0.3.4"
+    babel-plugin-htmlbars-inline-precompile "^5.2.0"
+
+"@norith/glimmer-blueprint@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-blueprint/-/glimmer-blueprint-1.0.2.tgz#01c45a77361e3c5889b7887f635bf7fe568cc473"
+  integrity sha512-JIgNhmGKqgLU9cvcVX0pquuW5b55LT3l35iubulN2MI0slKWRb3U5Zc/onv7i9SZDVkdXFyWFiisYvZTpSiXmw==
   dependencies:
     ember-cli-string-utils "^1.1.0"
 
@@ -2579,6 +2592,25 @@
     "@glimmer/env" "^0.1.7"
     "@glimmer/util" "0.84.0"
     "@norith/glimmer-core" "1.0.1"
+    broccoli-file-creator "^2.1.1"
+    broccoli-merge-trees "^3.0.2"
+    ember-cli-babel "^7.23.0"
+    ember-cli-get-component-path-option "^1.0.0"
+    ember-cli-is-package-missing "^1.0.0"
+    ember-cli-normalize-entity-name "^1.0.0"
+    ember-cli-path-utils "^1.0.0"
+    ember-cli-string-utils "^1.1.0"
+    ember-cli-typescript "^5.0.0"
+    ember-compatibility-helpers "^1.1.2"
+
+"@norith/glimmer-component@1.0.2", "@norith/glimmer-component@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-component/-/glimmer-component-1.0.2.tgz#1a7533f7efc0ea54f1b01f7c82086216b999a25b"
+  integrity sha512-uqOa+k4TIZLZ3KiHJ9RrC7h6n3VDGqN6xRk1TEZ6gVnH8Hn/f1CRG8GZnYt0ySEA+UjbK4cBxp+/ozPkPio6wQ==
+  dependencies:
+    "@glimmer/env" "^0.1.7"
+    "@glimmer/util" "0.84.0"
+    "@norith/glimmer-core" "1.0.2"
     broccoli-file-creator "^2.1.1"
     broccoli-merge-trees "^3.0.2"
     ember-cli-babel "^7.23.0"
@@ -2606,10 +2638,33 @@
     "@glimmer/validator" "0.84.0"
     "@simple-dom/interface" "^1.4.0"
 
+"@norith/glimmer-core@1.0.2", "@norith/glimmer-core@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-core/-/glimmer-core-1.0.2.tgz#0a598efac34fd57491c1ff0eb580fda0da1e8d26"
+  integrity sha512-EagZtRYSnjoXUBQEXBIIhPofVo7oUk56ts0QLdoJMhugtNrq613DpnZHcm3kZ07vz/7gdeeDEvmRBExjYAkWeg==
+  dependencies:
+    "@glimmer/env" "^0.1.7"
+    "@glimmer/global-context" "0.84.0"
+    "@glimmer/interfaces" "0.84.0"
+    "@glimmer/manager" "0.84.0"
+    "@glimmer/opcode-compiler" "0.84.0"
+    "@glimmer/owner" "0.84.0"
+    "@glimmer/program" "0.84.0"
+    "@glimmer/runtime" "0.84.0"
+    "@glimmer/validator" "0.84.0"
+    "@simple-dom/interface" "^1.4.0"
+
 "@norith/glimmer-debug@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@norith/glimmer-debug/-/glimmer-debug-1.0.1.tgz#d5b1110ddc7dfd8a5c5f76101dfdef94d8b882c7"
   integrity sha512-Exzoo1PSGrx1EeLSQa0YmCImQ4VjzJ0Sh5pHTLeJOduaHUH9a70xXaYRs/tfS6r4qJn8cYV7loJzb26QllLLgA==
+  dependencies:
+    "@glimmer/global-context" "0.84.0"
+
+"@norith/glimmer-debug@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-debug/-/glimmer-debug-1.0.2.tgz#034a420fd0e5419870f5ffaa102d349911d9a3c2"
+  integrity sha512-1IIKpjHkyHPUvHlKcGIGPU2BI8b8g7f3MQGnPy3KpxQV/VcHpJqLv4UK6yFhogKgWh7gJ5WyTAw9ywgZ+x9cBA==
   dependencies:
     "@glimmer/global-context" "0.84.0"
 
@@ -2622,10 +2677,26 @@
     "@norith/glimmer-component" "1.0.1"
     "@norith/glimmer-core" "1.0.1"
 
+"@norith/glimmer-helper@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-helper/-/glimmer-helper-1.0.2.tgz#8ad53d62c3c718813d191f2fd903136b91697564"
+  integrity sha512-vQcI8lS6vAWu2oYMTTTDyCM/WD9KxhLQ5NoNZchx6bafKqA4R0qTOpre/L3kTpPEf3CZakfr7TLtcbs69OrD7g==
+  dependencies:
+    "@glimmer/runtime" "0.84.0"
+    "@norith/glimmer-component" "1.0.2"
+    "@norith/glimmer-core" "1.0.2"
+
 "@norith/glimmer-modifier@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@norith/glimmer-modifier/-/glimmer-modifier-1.0.1.tgz#3e2e4c26b9d0f20fc644a2d2ca62f167115609f3"
   integrity sha512-TWF7oAgIfCh8PVNZJ0POGG87vwoLimVE0lUg6rSMkqTK4wvYPA5Pwy9caOF/oKK/V8AmGI29MIPVR7E7SdnPWw==
+  dependencies:
+    "@glimmer/runtime" "0.84.0"
+
+"@norith/glimmer-modifier@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-modifier/-/glimmer-modifier-1.0.2.tgz#5dbf1fa08a344425ed15c2ff35406a6bdef3d948"
+  integrity sha512-o0Km431CtIG6Rc8JXdGZk4Beiu7Uhu6ym9ox6f85NxJATZnSnxByJlN+NDXNSyRH/nLzP9KXm5eCiAEhOuVKdA==
   dependencies:
     "@glimmer/runtime" "0.84.0"
 
@@ -2643,6 +2714,20 @@
     "@simple-dom/serializer" "^1.4.0"
     "@simple-dom/void-map" "^1.4.0"
 
+"@norith/glimmer-ssr@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-ssr/-/glimmer-ssr-1.0.2.tgz#a00670b7518b05ea1c17444cb47a973ade45f0f1"
+  integrity sha512-14Lm4ltfP9ie5SSRFw7W+YsEiwHe0RCMwH0xTq7AA4tyLIi4EdNB5LtCexXwsQWervZaD8G+FrNpjxKMCqlP8A==
+  dependencies:
+    "@glimmer/node" "0.84.0"
+    "@glimmer/reference" "0.84.0"
+    "@glimmer/runtime" "0.84.0"
+    "@glimmer/util" "0.84.0"
+    "@norith/glimmer-core" "1.0.2"
+    "@simple-dom/document" "^1.4.0"
+    "@simple-dom/serializer" "^1.4.0"
+    "@simple-dom/void-map" "^1.4.0"
+
 "@norith/glimmer-tracking@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@norith/glimmer-tracking/-/glimmer-tracking-1.0.1.tgz#dd3bd2d1d677e9a1452c9fe6bf95a5625cb192c5"
@@ -2650,6 +2735,92 @@
   dependencies:
     "@glimmer/env" "^0.1.7"
     "@glimmer/validator" "0.84.0"
+
+"@norith/glimmer-tracking@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-tracking/-/glimmer-tracking-1.0.2.tgz#11e8006d6e8a9fa26418d7bf87fc0fc282ba9727"
+  integrity sha512-It/B8JqCsV1rctz+Rj8fXDvl/ekIXk+q5SLA/L/Jh5vUq4b9xs1i8zky/v1iUAlQSUrPrAu3UTKEQ0D+lZpV0Q==
+  dependencies:
+    "@glimmer/env" "^0.1.7"
+    "@glimmer/validator" "0.84.0"
+
+"@norith/glimmerx-babel-preset@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-babel-preset/-/glimmerx-babel-preset-1.0.5.tgz#0318c199f4435ee507f2c36ea00967614b26c85b"
+  integrity sha512-m8naXm95i+TYky248x06u3JmTWDDQp8czD97aBBLXHD/NyyQo2dUMWS4YR0PtIocu2OcSOcsVf/n6BqgwXMDZg==
+  dependencies:
+    "@norith/glimmer-babel-preset" "^1.0.1"
+
+"@norith/glimmerx-component@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-component/-/glimmerx-component-1.0.5.tgz#3e685f668467be2139af871349c511f291afdff7"
+  integrity sha512-SadnkYvL9YLrsrT5LZ6P7m0qhX7zxOyrB/2XB2W8B2erkRrhzY2nC4H7vznwPnOzNgps9MCqvuGNIGW62q588A==
+  dependencies:
+    "@norith/glimmer-component" "^1.0.1"
+    "@norith/glimmer-tracking" "^1.0.1"
+    ember-cli-babel "^7.26.2"
+    ember-cli-babel-plugin-helpers "^1.1.0"
+    ember-cli-htmlbars "^5.7.1"
+    ember-cli-version-checker "5.1.2"
+    ember-template-imports "^1.1.1"
+
+"@norith/glimmerx-core@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-core/-/glimmerx-core-1.0.5.tgz#6c568e915e35d0f1387413c14820342f86b59711"
+  integrity sha512-f8UTjXvEbmFvLS6bMM2JnDl5Cd9uH6ILFyiMFq/bs9dPnD80FAk/EDRW5CDxt87nwjiHR8o4RPNfvmYQ7j9gYQ==
+  dependencies:
+    "@glimmer/interfaces" "0.84.0"
+    "@glimmer/manager" "0.84.0"
+    "@norith/glimmer-core" "^1.0.1"
+
+"@norith/glimmerx-eslint-plugin@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-eslint-plugin/-/glimmerx-eslint-plugin-1.0.5.tgz#b29475a934a271df9cb142b5e834ec9b58e82540"
+  integrity sha512-9iNbj31nr1whCqTn7xbkhkeonD3AWgNOZWd1+ZWG+X+JppBOTTBYsljyvobbaXf7tspclION65PQfOk2Tu6tvw==
+
+"@norith/glimmerx-helper@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-helper/-/glimmerx-helper-1.0.5.tgz#4006b82c93106fad9410f961f6845aff7d570c1f"
+  integrity sha512-VGgtr9LBUL/gHb8qkqO6rn4yuz3kZHL8apiyHccC9B5KMUHIF5DTqlFASl4DROQWmpxd57D36PT3PtirMdU8Vw==
+  dependencies:
+    "@glimmer/interfaces" "0.84.0"
+    "@norith/glimmer-helper" "^1.0.1"
+    ember-cli-babel "^7.26.2"
+
+"@norith/glimmerx-modifier@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-modifier/-/glimmerx-modifier-1.0.5.tgz#aecf1bf94d72ddb20031cb7dc4e68b1be0c0c5f0"
+  integrity sha512-6cpx6gD4Lcy8voIjbSWYjJL0WB5qj8TBA1AcmD8CGAqaU9IhnEieO3QxTJKLw636mQ18V3PSjzPp/KsCnPPlZQ==
+  dependencies:
+    "@norith/glimmer-core" "^1.0.1"
+    "@norith/glimmer-modifier" "^1.0.1"
+    ember-cli-babel "^7.26.2"
+
+"@norith/glimmerx-service@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-service/-/glimmerx-service-1.0.5.tgz#838b66c8b54f548d36d35186e9753bce1533ee54"
+  integrity sha512-osGUldVBruXuNZ/M5i997EMAGeRhT8dejbPXbNS2N25Eqg3tS86oMy+xmFD70KCg9o/bHLSWQY/iXr6GFqX1XQ==
+  dependencies:
+    "@glimmer/env" "^0.1.7"
+    "@norith/glimmer-debug" "^1.0.1"
+    ember-cli-babel "^7.26.2"
+
+"@norith/glimmerx-ssr@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-ssr/-/glimmerx-ssr-1.0.5.tgz#a2e06a02d8350ec94863074e380de2c656634b34"
+  integrity sha512-zQEtjdrYVJSMj4gR2XnCjPttjneftHtF3nxXmopFfRMP+o7QjAc+DVZW7h2yGOeAyNaUmCZF1ulkWw0pU2McPw==
+  dependencies:
+    "@glimmer/interfaces" "0.84.0"
+    "@norith/glimmer-ssr" "^1.0.1"
+
+"@norith/glimmerx-webpack-loader@1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@norith/glimmerx-webpack-loader/-/glimmerx-webpack-loader-1.0.5.tgz#6956bcd1d3360eeb776db7bc8c655d332dafad02"
+  integrity sha512-6OmED3EkY496vd+rWd3e9DC9rpnVMPArbmrPfjcvQzi4N/sBObpTLoCoojxmXTMEnQ/TKIg19zkh5aMwffIvXw==
+  dependencies:
+    "@glimmer/syntax" "^0.92.0"
+    loader-utils "2.0.0"
+    schema-utils "3.0.0"
 
 "@octokit/auth-token@^2.4.0", "@octokit/auth-token@^2.4.4":
   version "2.5.0"

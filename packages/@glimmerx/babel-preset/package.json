@@ -13,7 +13,7 @@
     "test": "mocha -r esm"
   },
   "dependencies": {
-    "@norith/glimmer-babel-preset": "^1.0.1"
+    "@norith/glimmer-babel-preset": "^1.0.2"
   },
   "devDependencies": {
     "babel-plugin-tester": "^6.4.0",
