@@ -1,6 +1,6 @@
 {
   "name": "glimmerx",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "private": true,
   "description": "Lightweight runtime for Glimmer components (maintained fork)",
   "repository": "https://github.com/snorith/glimmer-experimental",
