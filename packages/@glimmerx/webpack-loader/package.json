@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-webpack-loader",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "GlimmerX Webpack Loader",
   "repository": {
     "type": "git",

@@ -4,27 +4,69 @@ Potential improvements to the `@norith/glimmerx-*` and `@norith/glimmer-*` forke
 
 ---
 
-## 1. ~~Eliminate Tree-Shaking Bare Reference Requirement~~ — Already Solved
+## 1. ~~Eliminate Tree-Shaking Bare Reference Requirement~~ — Fixed via `preserveScopePlugin`
 
-**Status:** No loader change needed — the existing `scope()` mechanism already prevents tree-shaking.
+**Status:** Fixed. Consumer apps must add one top-level babel plugin. Bare reference statements are no longer needed.
 
-### Investigation (2026-03-29)
+### Real Root Cause (corrected 2026-04-09)
 
-The `preprocessEmbeddedTemplates` function from `babel-plugin-htmlbars-inline-precompile` already extracts template locals via `getTemplateLocals()` and emits them in a `scope()` function:
+The earlier 2026-03-29 conclusion ("`scope()` already prevents tree-shaking") was wrong. It was tested on a JS-only file, not a TypeScript file. The real failure mode only triggers when `@babel/preset-typescript` is in the babel pipeline, which is the case in any consumer app using `babel-loader` for `.ts` files.
 
-```javascript
-// Input
-static template = hbs`<PlainAwait /><button {{on 'click' this.go}}>Go</button>`;
+The chain is:
 
-// Output from preprocessEmbeddedTemplates
-static template = hbs(`...`, { scope() { return {PlainAwait, on}; } });
+1. `@babel/preset-typescript`'s `Program.enter` visitor walks every top-level binding and calls `isImportTypeOnly(binding)`. That function iterates `binding.referencePaths` — if every reference is a TypeScript type position (or there are zero references), the import gets stripped.
+2. Babel's scope tracker has no idea what's inside an `hbs` tagged template literal. It's a string. So an import like `PlainAwait` whose only "use" is `<PlainAwait />` inside `hbs\`...\`` has zero reference paths from babel's perspective. preset-typescript strips it.
+3. By the time `babel-plugin-htmlbars-inline-precompile` reaches the `TaggedTemplateExpression` and calls `getScope(path.scope)`, the bindings are already gone. It passes an empty `locals` to the precompiler.
+4. `@glimmer/compiler` precompiles the template in strict mode with no locals, reaches `<PlainAwait>`, and throws:
+   > `Attempted to invoke a component that was not in scope in a strict mode template`
+
+The bare reference statement (`PlainAwait;` on its own line) worked because it was a value reference babel could see, so preset-typescript's `isImportTypeOnly` returned `false` and the import survived.
+
+### Why the Old `@glimmerx/babel-plugin-component-templates` Didn't Have This Bug
+
+The old (now-removed) plugin had a `Program.enter` visitor that called `binding.reference(noopNode)` on every top-level binding before any other transform ran. From preset-typescript's perspective every binding then had ≥1 reference path that was *not* in a type position, so nothing got stripped. After template processing had injected real references via the scope expression, the phantom references were removed in `Program.exit`. The real ones (inside the compiled template's `scope: () => [...]` closure) carried the imports through tree-shaking.
+
+`babel-plugin-htmlbars-inline-precompile` (the upstream replacement that the current pipeline uses) does *not* do this dance. That's the regression.
+
+### The Fix
+
+Ported the phantom-reference mechanism to a small standalone babel plugin: `packages/@glimmerx/babel-preset/preserve-scope-plugin.js` (~30 lines).
+
+**Important constraint on placement:** This plugin must run *before* `@babel/preset-typescript`'s `Program.enter`. Babel's preset ordering rules — presets expand in *reverse* array order, and within a preset the preset's own plugins come before its nested presets' plugins — mean we cannot ship this plugin inside `@glimmerx/babel-preset` and have it work in the typical consumer config (where `@babel/preset-typescript` is listed last, i.e. expanded first). The plugin will always end up running *after* preset-typescript has already stripped imports.
+
+So the plugin is exported but **must be added by the consumer as a top-level babel plugin**.
+
+### Required Consumer Change
+
+In the consumer's `.babelrc` / `.babelrc.js` / `babel.config.js`, add the plugin to the top-level `plugins` array:
+
+```js
+// .babelrc.js (or equivalent)
+module.exports = {
+  plugins: [
+    require('@glimmerx/babel-preset/preserve-scope-plugin'),
+    // ...any other plugins
+  ],
+  presets: [
+    ['@babel/preset-env', { /* ... */ }],
+    '@glimmerx/babel-preset',
+    ['@babel/preset-typescript', { allowDeclareFields: true }],
+  ],
+};
 ```
 
-The `scope()` function creates JavaScript references to all template-scoped variables. Webpack sees these references and keeps the imports alive — even in production mode with full tree-shaking. This was verified with a webpack production build: imported helpers referenced only in templates are preserved in the bundle.
+Or, equivalently, via the named export:
 
-### What This Means for Consumer Apps
+```js
+const { preserveScopePlugin } = require('@glimmerx/babel-preset');
 
-**The bare reference statements are unnecessary and can be safely removed.** The `scope()` output already keeps imports alive. Developers can clean up their component files:
+module.exports = {
+  plugins: [preserveScopePlugin /* , ... */],
+  presets: [/* ... */],
+};
+```
+
+After this change, consumer files can drop their bare reference statements:
 
 ```diff
   import Component, { hbs } from "@glimmerx/component";
@@ -40,7 +82,24 @@ The `scope()` function creates JavaScript references to all template-scoped vari
   }
 ```
 
-This should be communicated to consumer app developers. No fork changes required.
+### Verification
+
+End-to-end verified against the `fableandfolly_megatronweb/client` consumer babel config (`@babel/preset-env` + `@glimmerx/babel-preset` + `@babel/preset-typescript`). With the top-level plugin added, the file compiles cleanly and the output preserves both imports plus a `scope: () => [PlainAwait, on]` closure. Without the plugin, the same file throws the strict-mode-scope error.
+
+A regression test fixture lives at `packages/@glimmerx/babel-preset/test/fixtures/preserve-scope-typescript/`. Note: the existing `mocha + esm` test runner has a pre-existing Node 22 incompatibility and currently can't load `test/index.js` — that's a separate cleanup task. The fixture has been verified manually by running babel against `code.ts` and comparing to `output.js`.
+
+### Why Not Auto-Wire It Inside the Preset?
+
+Babel plugin-ordering rules make this impossible without consumer-side changes:
+
+- Top-level plugins run before all preset plugins.
+- Presets expand in reverse array order; within each preset, the preset's own plugins run before its nested presets' plugins.
+- In the consumer's config `presets: [preset-env, glimmerx, preset-typescript]`, preset-typescript expands first, so its `Program.enter` strips imports before `glimmerx`'s plugins (including any we'd nest here) get a chance to run.
+
+The only ways to make the plugin run before preset-typescript are:
+1. Add it as a top-level plugin (chosen — minimal one-line change).
+2. Reorder the consumer's presets so `@glimmerx/babel-preset` is last (more invasive, changes existing semantics).
+3. Fork or monkey-patch `@babel/plugin-transform-typescript` (too fragile).
 
 ---
 
