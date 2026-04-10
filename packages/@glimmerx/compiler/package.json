@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-compiler",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Compiler functionality",
   "main": "index.js",
   "repository": {

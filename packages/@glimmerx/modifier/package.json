@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-modifier",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Modifier Functionality",
   "keywords": [
     "ember-addon"
