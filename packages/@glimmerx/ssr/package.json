@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-ssr",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "SSR functionality",
   "main": "dist/commonjs/index.js",
   "module": "dist/modules/index.js",
