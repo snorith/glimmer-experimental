@@ -7,7 +7,13 @@ on:
         description: 'Release type'
         required: true
         type: choice
+        default: none
         options:
+          # 'none' publishes the versions ALREADY SET on the selected ref (release branches
+          # pre-set them by hand when a bump would compute a colliding number — the FP-1690
+          # teardown release is the precedent; this repo's v1.0.6/v1.0.7 tags are occupied by
+          # failed, unpublished releases). The bump options remain for normal releases.
+          - none
           - patch
           - minor
           - major
@@ -30,7 +36,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: '22'
+          # Pin to 22.14.0 to avoid npm regression in 22.22.2 (MODULE_NOT_FOUND promise-retry)
+          node-version: '22.14.0'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Upgrade npm for Trusted Publishing OIDC
@@ -47,19 +54,25 @@ jobs:
       - name: Bump version
         id: version
         run: |
-          node scripts/bump-version.js ${{ inputs.release_type }}
+          if [ "${{ inputs.release_type }}" != "none" ]; then
+            node scripts/bump-version.js ${{ inputs.release_type }}
+          fi
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
+      - name: Publish to npm
+        run: node scripts/publish-packages.js --provenance
+
       - name: Commit and tag
+        # Only tag after successful publish to avoid orphaned tags on failure
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Release v${{ steps.version.outputs.version }}"
-          git tag "v${{ steps.version.outputs.version }}"
-          git push
-          git push --tags
-
-      - name: Publish to npm
-        run: node scripts/publish-packages.js --provenance
+          # With release_type=none the tree is already at the release version — nothing to commit.
+          git diff --cached --quiet || git commit -m "Release v${{ steps.version.outputs.version }}"
+          # Force-push only this specific tag to handle reruns after failures
+          git tag -f "v${{ steps.version.outputs.version }}"
+          git push origin HEAD
+          git push origin "+refs/tags/v${{ steps.version.outputs.version }}"
