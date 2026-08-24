@@ -2864,6 +2864,22 @@
     "@glimmer/validator" "0.84.0"
     "@simple-dom/interface" "^1.4.0"
 
+"@norith/glimmer-core@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@norith/glimmer-core/-/glimmer-core-1.0.3.tgz#d9b0c3e63286e6cad86ab86e5c13ee70c6f27ceb"
+  integrity sha512-H9KOfEks2JNDcExgL2Y1rHEEFld1WX47krE8vwCWWa6VZSbcE7WAyfDLN2rCKFA1tW39/IZouqCuXlpeFBUnHQ==
+  dependencies:
+    "@glimmer/env" "^0.1.7"
+    "@glimmer/global-context" "0.84.0"
+    "@glimmer/interfaces" "0.84.0"
+    "@glimmer/manager" "0.84.0"
+    "@glimmer/opcode-compiler" "0.84.0"
+    "@glimmer/owner" "0.84.0"
+    "@glimmer/program" "0.84.0"
+    "@glimmer/runtime" "0.84.0"
+    "@glimmer/validator" "0.84.0"
+    "@simple-dom/interface" "^1.4.0"
+
 "@norith/glimmer-debug@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@norith/glimmer-debug/-/glimmer-debug-1.0.0.tgz#741a9726dac9b727374174d91796dda00f55db59"
