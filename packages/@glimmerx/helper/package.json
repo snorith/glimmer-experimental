@@ -1,6 +1,6 @@
 {
   "name": "@norith/glimmerx-helper",
-  "version": "1.0.5",
+  "version": "1.0.12",
   "description": "Helper Functionality",
   "keywords": [
     "ember-addon"
