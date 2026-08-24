@@ -22,6 +22,8 @@ try {
 
 export { default as Owner, FactoryIdentifier } from './src/owner';
 export { default as renderComponent, RenderComponentOptions } from './src/renderComponent';
+export { destroyRenderResult } from '@norith/glimmer-core';
+export type { RenderResult } from '@norith/glimmer-core';
 
 export {
   setComponentTemplate,
